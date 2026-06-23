@@ -3,13 +3,16 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from "framer-motion";
-import { Play, Ticket, Star, Clock, Globe, ChevronLeft, ChevronRight } from "lucide-react";
-
+  Play,
+  Ticket,
+  Star,
+  Clock,
+  Globe,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import type { Movie } from "@/lib/types";
 import { formatRuntime } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -19,11 +22,6 @@ import { CONTAINER } from "@/components/shared/section";
 
 const ROTATE_MS = 6500;
 
-/**
- * Auto-rotating hero. Crossfades large backdrops with a gradient scrim for text
- * legibility, exposes prev/next + dot controls, pauses on hover/focus, and
- * honours `prefers-reduced-motion` by disabling both motion and autoplay.
- */
 export function HeroCarousel({ movies }: { movies: Movie[] }) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = React.useState(0);
@@ -46,15 +44,13 @@ export function HeroCarousel({ movies }: { movies: Movie[] }) {
 
   return (
     <section
-      aria-label="Featured movies"
-      aria-roledescription="carousel"
       className="relative isolate"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      <div className="relative h-[78vh] min-h-[520px] w-full overflow-hidden">
+      <div className="relative h-[78vh] min-h-130 w-full overflow-hidden">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={movie.id}
@@ -77,11 +73,11 @@ export function HeroCarousel({ movies }: { movies: Movie[] }) {
 
         {/* Gradient scrims for readability */}
         <div
-          className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10"
+          className="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/10"
           aria-hidden
         />
         <div
-          className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent"
+          className="absolute inset-0 bg-linear-to-t from-background/90 via-background/40 to-transparent"
           aria-hidden
         />
 

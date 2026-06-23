@@ -22,6 +22,7 @@ export function BrandLogo({
       <span className="bg-brand-gradient grid size-9 place-items-center rounded-xl text-brand-foreground shadow-lg shadow-brand/30">
         <Clapperboard className="size-5" />
       </span>
+
       <span
         className={cn(
           "font-heading text-lg font-bold tracking-tight",

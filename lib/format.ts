@@ -38,3 +38,31 @@ export function formatCompact(value: number): string {
     maximumFractionDigits: 1,
   }).format(value);
 }
+
+/** "270.00" or 270 -> "₹270". API money is a decimal string — parse first. */
+export function formatMoney(value: string | number): string {
+  const amount = typeof value === "string" ? Number(value) : value;
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+  }).format(amount);
+}
+
+/** ISO datetime -> "10:00 AM" (fixed locale to avoid hydration drift). */
+export function formatTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString("en-IN", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
+/** ISO datetime -> "Mon, 23 Jun". */
+export function formatDayDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+}

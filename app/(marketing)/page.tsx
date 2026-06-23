@@ -16,8 +16,9 @@ import { BrowseByGenre } from "@/components/sections/browse-by-genre";
 import { FeaturedTheatres } from "@/components/sections/featured-theatres";
 import { OffersSection } from "@/components/sections/offers-section";
 import { DownloadApp } from "@/components/sections/download-app";
+import config from "@/lib/config";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+// const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function HomePage() {
   // Fetch every rail in parallel on the server.
@@ -38,10 +39,10 @@ export default async function HomePage() {
       {
         "@type": "WebSite",
         name: SITE.name,
-        url: siteUrl,
+        url: config.siteUrl,
         potentialAction: {
           "@type": "SearchAction",
-          target: `${siteUrl}/search?q={search_term_string}`,
+          target: `${config.siteUrl}/search?q={search_term_string}`,
           "query-input": "required name=search_term_string",
         },
       },
@@ -56,7 +57,7 @@ export default async function HomePage() {
             name: m.title,
             genre: m.genres,
             inLanguage: m.languages,
-            url: `${siteUrl}/movies/${m.slug}`,
+            url: `${config.siteUrl}/movies/${m.slug}`,
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: m.rating,
@@ -72,6 +73,7 @@ export default async function HomePage() {
   return (
     <main id="main" className="flex-1">
       <JsonLd data={jsonLd} />
+
       <HeroCarousel movies={heroMovies} />
       <MoviesSection nowShowing={nowShowing} comingSoon={comingSoon} />
       <RecommendedCarousel movies={recommended} />

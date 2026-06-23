@@ -1,44 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 
 import { GoogleButton } from "@/components/auth/google-button";
+import { useAuth } from "@/components/providers/auth-provider";
 
 export function SignInForm() {
-  const router = useRouter();
+  const { signInWithGoogle } = useAuth();
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  // ---------------------------------------------------------------------------
-  // 👇 GOOGLE AUTH INTEGRATION SEAM — implement your provider here.
-  //
-  // NextAuth (Auth.js):
-  //   import { signIn } from "next-auth/react";
-  //   await signIn("google", { callbackUrl: "/" });
-  //
-  // Firebase:
-  //   import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-  //   await signInWithPopup(getAuth(), new GoogleAuthProvider());
-  //
-  // Supabase:
-  //   import { createClient } from "@/lib/supabase/client";
-  //   await createClient().auth.signInWithOAuth({ provider: "google" });
-  // ---------------------------------------------------------------------------
-  async function handleGoogle() {
+  // Hand off to the backend's Google OAuth flow; it redirects back to
+  // /auth/callback with tokens. The page navigates away, so the spinner simply
+  // stays until then.
+  function handleGoogle() {
     setGoogleLoading(true);
     try {
-      // TODO: replace this stub with your provider call (see comment above).
-      await new Promise((r) => setTimeout(r, 600));
-      toast.info("Connect Google sign-in", {
-        description: "Wire up your auth provider in handleGoogle().",
-      });
-      router.push("/");
+      signInWithGoogle();
     } catch {
-      toast.error("Google sign-in failed. Please try again.");
-    } finally {
       setGoogleLoading(false);
+      toast.error("Google sign-in failed. Please try again.");
     }
   }
 

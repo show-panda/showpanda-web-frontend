@@ -8,7 +8,7 @@ import type {
 } from "@/lib/types";
 
 export const SITE = {
-  name: "Cineplex",
+  name: "ShowPanda",
   tagline: "Book the movies you love.",
   description:
     "Discover the latest movie releases, browse theatres and events near you, and book tickets in seconds — all on Cineplex.",

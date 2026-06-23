@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos", pathname: "/**" },
       { protocol: "https", hostname: "fastly.picsum.photos", pathname: "/**" },
+      // Real movie posters from the booking API.
+      { protocol: "https", hostname: "image.tmdb.org", pathname: "/**" },
     ],
   },
 };
