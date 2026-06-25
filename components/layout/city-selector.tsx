@@ -17,26 +17,48 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { getCities } from "@/lib/api/landing.api";
+import { City } from "@/lib/types/landing.type";
 
-const STORAGE_KEY = "cineplex.city";
+const STORAGE_KEY = "showpanda.city";
 
 export function CitySelector({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
-  const [city, setCity] = useState("Mumbai");
+  const [cities, setCities] = useState<City[] | null>(null);
+  const [city, setCity] = useState<City | null>(cities?.[0] || null);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchCities() {
+      try {
+        const res = await getCities();
+        if (!ignore) setCities(res);
+      } catch (error) {
+        console.log("Error in getting cities data: ", error);
+      }
+    }
+
+    fetchCities();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (saved) setCity(saved);
+    // eslint-disable-next-line
+    if (saved) setCity(JSON.parse(saved));
   }, []);
 
-  function select(name: string) {
-    setCity(name);
-    window.localStorage.setItem(STORAGE_KEY, name);
+  function selectCity(city: City) {
+    setCity(city);
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(city));
     setOpen(false);
   }
 
-  const popular = CITIES.filter((c) => c.popular);
+  // const popular = CITIES.filter((c) => c.popular);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -48,7 +70,7 @@ export function CitySelector({ className }: { className?: string }) {
       >
         <MapPin className="size-4 text-brand" />
 
-        <span className="max-w-28 truncate">{city}</span>
+        <span className="max-w-28 truncate">{city?.name}</span>
 
         <ChevronDown
           className={cn(
@@ -63,8 +85,9 @@ export function CitySelector({ className }: { className?: string }) {
           <CommandInput placeholder="Search for your city" />
           <CommandList>
             <CommandEmpty>No cities found.</CommandEmpty>
-            <CommandGroup heading="Popular Cities">
-              {popular.map((c) => (
+
+            {/* <CommandGroup heading="Popular Cities">
+              {cities?.map((c) => (
                 <CommandItem
                   key={c.id}
                   value={c.name}
@@ -74,14 +97,15 @@ export function CitySelector({ className }: { className?: string }) {
                   {c.name}
                 </CommandItem>
               ))}
-            </CommandGroup>
+            </CommandGroup> */}
+
             <CommandGroup heading="All Cities">
-              {CITIES.map((c) => (
+              {cities?.map((c) => (
                 <CommandItem
                   key={c.id}
                   value={c.name}
-                  data-checked={c.name === city}
-                  onSelect={() => select(c.name)}
+                  data-checked={c.id === city?.id}
+                  onSelect={() => selectCity(c)}
                 >
                   {c.name}
                 </CommandItem>
