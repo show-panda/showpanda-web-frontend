@@ -53,7 +53,6 @@ export function RecommendedCarousel({ movies }: { movies: Movie[] }) {
           eyebrow="Trending now"
           title="Recommended for you"
           description="Hand-picked from what's popular, top-rated, and trending in your city this week."
-          action={{ label: "View all", href: "/movies?sort=trending" }}
         />
 
         {/* Arrow controls */}

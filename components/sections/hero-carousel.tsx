@@ -159,7 +159,7 @@ export function HeroCarousel({ movies }: { movies: Movie[] }) {
                     className="bg-brand-gradient h-11 border-0 px-6 text-brand-foreground shadow-lg shadow-brand/30"
                     asChild
                   >
-                    <Link href={`/movies/${movie.slug}/book`}>
+                    <Link href="#now-showing">
                       <Ticket className="size-4" />
                       Book Now
                     </Link>

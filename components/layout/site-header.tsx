@@ -10,7 +10,6 @@ import { SearchBar } from "@/components/layout/search-bar";
 import { CitySelector } from "@/components/layout/city-selector";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { AccountMenu } from "@/components/auth/account-menu";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -55,7 +54,6 @@ export function SiteHeader() {
 
           <ThemeToggle />
 
-          <AccountMenu />
           <MobileNav />
         </div>
       </div>

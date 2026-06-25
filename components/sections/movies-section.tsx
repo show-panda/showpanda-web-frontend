@@ -47,7 +47,6 @@ export function MoviesSection({
         eyebrow="In cinemas"
         title="Movies"
         description="Catch the latest blockbusters now showing, or get ahead of the queue for upcoming releases."
-        action={{ label: "See all movies", href: "/movies" }}
       />
 
       <Tabs defaultValue="now-showing" onValueChange={handleTabChange}>

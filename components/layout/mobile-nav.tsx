@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, LogIn } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import { PRIMARY_NAV } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -57,29 +56,6 @@ export function MobileNav() {
             </SheetClose>
           ))}
         </nav>
-
-        <SheetFooter className="mt-auto p-0">
-          <SheetClose asChild>
-            <Button
-              asChild
-              variant="outline"
-              className="h-10 w-full justify-center"
-            >
-              <Link href="/sign-in">
-                <LogIn className="size-4" />
-                Sign in
-              </Link>
-            </Button>
-          </SheetClose>
-          <SheetClose asChild>
-            <Button
-              asChild
-              className="bg-brand-gradient h-10 w-full justify-center border-0 text-brand-foreground"
-            >
-              <Link href="/sign-up">Sign up</Link>
-            </Button>
-          </SheetClose>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
