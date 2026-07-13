@@ -11,3 +11,30 @@ export type City = {
   state: string;
   updatedAt: string;
 };
+
+export type getRecommendedMoviesApiResT = {
+  code: number;
+  message?: string;
+  data: Movie[];
+};
+
+export type getAllMoviesApiResT = {
+  code: number;
+  message?: string;
+  data: Movie[];
+};
+export type Movie = {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  language: string;
+  durationMin: number;
+  releaseDate: string;
+  posterUrl: string;
+  rating: number;
+  genre: string[];
+  isRecommended: boolean;
+  createdAt: string;
+  updatedAt: string;
+};

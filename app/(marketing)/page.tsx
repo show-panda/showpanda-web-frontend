@@ -1,6 +1,5 @@
 import {
   getComingSoon,
-  getHeroMovies,
   getNowShowing,
   getOffers,
   getRecommended,
@@ -21,9 +20,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function HomePage() {
   // Fetch every rail in parallel on the server.
-  const [heroMovies, nowShowing, comingSoon, recommended, theatres, offers] =
+  const [nowShowing, comingSoon, recommended, theatres, offers] =
     await Promise.all([
-      getHeroMovies(),
       getNowShowing(),
       getComingSoon(),
       getRecommended(),
@@ -73,7 +71,7 @@ export default async function HomePage() {
     <main id="main" className="flex-1">
       <JsonLd data={jsonLd} />
 
-      <HeroCarousel movies={heroMovies} />
+      <HeroCarousel />
       <MoviesSection nowShowing={nowShowing} comingSoon={comingSoon} />
       <RecommendedCarousel movies={recommended} />
       <BrowseByLanguage />
