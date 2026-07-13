@@ -1,10 +1,13 @@
-export type getCitiesApiResT = City[];
-
+export type getCitiesOptionsApiResT = {
+  code: number;
+  message: string;
+  data: City[];
+};
 export type City = {
+  createdAt: string;
   id: string;
   name: string;
-  state: string;
   slug: string;
-  createdAt: string;
+  state: string;
   updatedAt: string;
 };

@@ -52,8 +52,11 @@ export function SiteHeader() {
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2 lg:ml-0">
           <CitySelector className="hidden sm:flex" />
+
           <ThemeToggle />
+
           <SignUpButton />
+
           <MobileNav />
         </div>
       </div>

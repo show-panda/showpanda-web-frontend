@@ -1,8 +1,8 @@
 "use server";
 
-import { getCitiesApiResT } from "../types/landing.type";
+import { getCitiesOptionsApiResT } from "../types/landing.type";
 import api from "./api";
 
-export const getCities = async (): Promise<getCitiesApiResT> => {
+export const getCitiesOptions = async (): Promise<getCitiesOptionsApiResT> => {
   return await api.get("/cities");
 };

@@ -16,7 +16,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { getCities } from "@/lib/api/landing.api";
+import { getCitiesOptions } from "@/lib/api/landing.api";
 import { City } from "@/lib/types/landing.type";
 
 const STORAGE_KEY = "showpanda.city";
@@ -31,8 +31,8 @@ export function CitySelector({ className }: { className?: string }) {
 
     async function fetchCities() {
       try {
-        const res = await getCities();
-        if (!ignore) setCities(res);
+        const res = await getCitiesOptions();
+        if (!ignore) setCities(res.data);
       } catch (error) {
         console.log("Error in getting cities data: ", error);
       }
@@ -51,17 +51,17 @@ export function CitySelector({ className }: { className?: string }) {
     if (saved) setCity(JSON.parse(saved));
   }, []);
 
-  function selectCity(city: City) {
+  const selectCity = (city: City) => {
     setCity(city);
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(city));
     setOpen(false);
-  }
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         className={cn(
-          "inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+          "py-2 px-2.5 items-center gap-1 rounded-lg text-sm font-medium transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
           className,
         )}
       >
