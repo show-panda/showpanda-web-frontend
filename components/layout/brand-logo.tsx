@@ -19,13 +19,13 @@ export function BrandLogo({
         className,
       )}
     >
-      <span className="bg-brand-gradient grid size-9 place-items-center rounded-xl text-brand-foreground shadow-lg shadow-brand/30">
+      <span className="bg-brand grid size-9 place-items-center rounded-xl text-brand-foreground shadow-lg shadow-brand/30">
         <Clapperboard className="size-5" />
       </span>
 
       <span
         className={cn(
-          "font-heading text-lg font-bold tracking-tight",
+          "text-brand font-heading text-xl font-bold tracking-tight",
           compact && "sr-only sm:not-sr-only",
         )}
       >

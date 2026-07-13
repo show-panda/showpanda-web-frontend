@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { MapPin, ChevronDown } from "lucide-react";
-import { CITIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   Popover,
@@ -58,8 +57,6 @@ export function CitySelector({ className }: { className?: string }) {
     setOpen(false);
   }
 
-  // const popular = CITIES.filter((c) => c.popular);
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
@@ -85,19 +82,6 @@ export function CitySelector({ className }: { className?: string }) {
           <CommandInput placeholder="Search for your city" />
           <CommandList>
             <CommandEmpty>No cities found.</CommandEmpty>
-
-            {/* <CommandGroup heading="Popular Cities">
-              {cities?.map((c) => (
-                <CommandItem
-                  key={c.id}
-                  value={c.name}
-                  data-checked={c.name === city}
-                  onSelect={() => select(c.name)}
-                >
-                  {c.name}
-                </CommandItem>
-              ))}
-            </CommandGroup> */}
 
             <CommandGroup heading="All Cities">
               {cities?.map((c) => (

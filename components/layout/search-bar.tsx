@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Film, Building2, Ticket, MapPin } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { searchCatalog, type SearchCategory } from "@/lib/search";
 import {
@@ -96,33 +95,33 @@ export function SearchBar({ className }: { className?: string }) {
             onValueChange={setQuery}
           />
           <CommandList>
-          <CommandEmpty>
-            {query
-              ? `No matches for “${query}”.`
-              : "Start typing to search the catalog."}
-          </CommandEmpty>
-          {groups.map((group) => {
-            const Icon = CATEGORY_ICON[group.category];
-            return (
-              <CommandGroup key={group.category} heading={group.category}>
-                {group.items.map((r) => (
-                  <CommandItem
-                    key={r.id}
-                    value={r.id}
-                    onSelect={() => go(r.href)}
-                  >
-                    <Icon className="text-muted-foreground" aria-hidden />
-                    <span className="flex min-w-0 flex-col">
-                      <span className="truncate">{r.label}</span>
-                      <span className="truncate text-xs text-muted-foreground">
-                        {r.sublabel}
+            <CommandEmpty>
+              {query
+                ? `No matches for “${query}”.`
+                : "Start typing to search the catalog."}
+            </CommandEmpty>
+            {groups.map((group) => {
+              const Icon = CATEGORY_ICON[group.category];
+              return (
+                <CommandGroup key={group.category} heading={group.category}>
+                  {group.items.map((r) => (
+                    <CommandItem
+                      key={r.id}
+                      value={r.id}
+                      onSelect={() => go(r.href)}
+                    >
+                      <Icon className="text-muted-foreground" aria-hidden />
+                      <span className="flex min-w-0 flex-col">
+                        <span className="truncate">{r.label}</span>
+                        <span className="truncate text-xs text-muted-foreground">
+                          {r.sublabel}
+                        </span>
                       </span>
-                    </span>
-                    <CommandShortcut>{r.category}</CommandShortcut>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            );
+                      <CommandShortcut>{r.category}</CommandShortcut>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              );
             })}
           </CommandList>
         </Command>

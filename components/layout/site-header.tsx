@@ -10,6 +10,7 @@ import { SearchBar } from "@/components/layout/search-bar";
 import { CitySelector } from "@/components/layout/city-selector";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { SignUpButton } from "@/components/layout/authentication/sign-up-btn";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,7 +31,7 @@ export function SiteHeader() {
           : "border-b border-transparent bg-background/0",
       )}
     >
-      <div className={cn(CONTAINER, "flex h-16 items-center gap-3 lg:gap-5")}>
+      <div className={cn(CONTAINER, "flex h-20 items-center gap-3 lg:gap-5")}>
         <BrandLogo compact />
 
         <nav aria-label="Primary" className="hidden items-center gap-8 xl:flex">
@@ -38,7 +39,7 @@ export function SiteHeader() {
             <Link
               href={link.href}
               key={link.href}
-              className="rounded-lg text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+              className="text-sm font-medium text-foreground transition-colors hover:text-brand"
             >
               {link.label}
             </Link>
@@ -51,9 +52,8 @@ export function SiteHeader() {
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2 lg:ml-0">
           <CitySelector className="hidden sm:flex" />
-
           <ThemeToggle />
-
+          <SignUpButton />
           <MobileNav />
         </div>
       </div>

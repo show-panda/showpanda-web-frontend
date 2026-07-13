@@ -16,6 +16,7 @@ import { BrowseByGenre } from "@/components/sections/browse-by-genre";
 import { FeaturedTheatres } from "@/components/sections/featured-theatres";
 import { OffersSection } from "@/components/sections/offers-section";
 import { DownloadApp } from "@/components/sections/download-app";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function HomePage() {
