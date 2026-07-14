@@ -88,7 +88,7 @@ export function DownloadApp() {
           aria-hidden
         />
         <div className="relative grid items-center gap-10 lg:grid-cols-2">
-          <div className="text-brand-foreground">
+          <div className="text-primary-white">
             <p className="mb-2 text-xs font-semibold tracking-[0.18em] text-white/80 uppercase">
               {SITE.name} mobile
             </p>
@@ -130,7 +130,7 @@ export function DownloadApp() {
           </div>
 
           <div className="flex items-center justify-center gap-4 lg:justify-end">
-            <div className="hidden text-right text-brand-foreground sm:block">
+            <div className="hidden text-right text-primary-white sm:block">
               <QrCode className="ml-auto mb-2 size-6 text-white/80" aria-hidden />
               <p className="font-heading text-lg font-semibold">Scan to install</p>
               <p className="max-w-40 text-sm text-white/80">

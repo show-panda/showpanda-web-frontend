@@ -19,7 +19,7 @@ export function BrandLogo({
         className,
       )}
     >
-      <span className="bg-brand grid size-9 place-items-center rounded-xl text-brand-foreground shadow-lg shadow-brand/30">
+      <span className="bg-brand grid size-9 place-items-center rounded-xl text-primary-white shadow-lg shadow-brand/30">
         <Clapperboard className="size-5" />
       </span>
 

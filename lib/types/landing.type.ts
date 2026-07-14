@@ -23,6 +23,12 @@ export type getAllMoviesApiResT = {
   message?: string;
   data: Movie[];
 };
+
+export type getCarouselMoviesApiResT = {
+  code: number;
+  message?: string;
+  data: Movie[];
+};
 export type Movie = {
   id: string;
   title: string;

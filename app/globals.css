@@ -10,10 +10,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-poppins);
+  /* --font-heading: var(--font-poppins); */
+
   --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
+  --color-primary-white: var(--primary-white);
+  --color-primary-black: var(--primary-black);
   --color-brand-accent: var(--brand-accent);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -53,16 +56,16 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
@@ -77,9 +80,12 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
+
   --brand: #ec1419;
-  --brand-foreground: oklch(0.985 0 0);
-  --brand-accent: oklch(0.7 0.19 41);
+  --primary-white: #fafafa;
+  --primary-black: #202228;
+  --brand-accent: #db3d3d;
+
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -93,10 +99,13 @@
 .dark {
   --background: oklch(0.115 0.006 285);
   --foreground: oklch(0.985 0 0);
+
   --brand: #ec1419;
-  --brand-foreground: oklch(0.99 0 0);
-  --brand-accent: oklch(0.72 0.2 41);
-  --card: oklch(0.205 0 0);
+  --primary-white: #fafafa;
+  --primary-black: #202228;
+  --brand-accent: #db3d3d;
+
+  --card: #cf1e1e;
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);

@@ -50,8 +50,8 @@ export function MovieCard({
         </Badge>
 
         {/* Hover overlay with quick-book CTA */}
-        <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/85 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover/card:opacity-100">
-          <span className="bg-brand-gradient m-3 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-brand-foreground shadow-lg">
+        <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/85 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover/card:opacity-100">
+          <span className="bg-brand-gradient m-3 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-primary-white shadow-lg">
             <Ticket className="size-4" />
             Book Tickets
           </span>
