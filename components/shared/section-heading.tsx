@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -24,26 +23,28 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        "mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-2",
+        "flex flex-wrap items-end justify-between gap-x-6 gap-y-2 sm:pb-8 pb-5",
         className,
       )}
     >
-      <div className="max-w-2xl">
-        {eyebrow ? (
-          <p className="text-brand-gradient mb-1.5 text-xs font-semibold tracking-[0.18em] uppercase">
-            {eyebrow}
-          </p>
-        ) : null}
+      <div className="space-y-2">
+        <section>
+          {eyebrow ? (
+            <p className="text-brand-gradient text-xs font-semibold tracking-[0.18em] uppercase">
+              {eyebrow}
+            </p>
+          ) : null}
 
-        <h2
-          id={id}
-          className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl"
-        >
-          {title}
-        </h2>
+          <h2
+            id={id}
+            className="sm:text-3xl text-2xl font-semibold tracking-tight text-balance capitalize"
+          >
+            {title}
+          </h2>
+        </section>
 
         {description ? (
-          <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+          <p className="sm:text-base text-sm text-primary-text opacity-70 text-wrap line-clamp-1">
             {description}
           </p>
         ) : null}

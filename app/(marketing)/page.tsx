@@ -70,7 +70,7 @@ export default async function HomePage() {
 
       <HeroCarousel />
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto w-full max-w-7xl overflow-hidden sm:px-6 px-4 sm:py-14">
         <MoviesSection />
         <RecommendedCarousel movies={recommended} />
         <BrowseByLanguage />
