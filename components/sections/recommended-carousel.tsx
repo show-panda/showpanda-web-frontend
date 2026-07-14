@@ -3,22 +3,29 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import type { Movie } from "@/lib/types";
+import { getRecommendedMovies } from "@/lib/api/landing.api";
+import type { Movie } from "@/lib/types/landing.type";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/shared/section";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { MovieCard } from "@/components/movies/movie-card";
+import MoviesListCard from "../landing/movies-list-card";
 
-/**
- * Horizontally scrollable "recommended" rail. Uses native scroll-snap for
- * smooth touch/trackpad scrolling and overlays arrow controls that
- * programmatically scroll by a viewport-width chunk. Arrows auto-disable at
- * the track ends and hide entirely on touch (no hover) via CSS.
- */
-export function RecommendedCarousel({ movies }: { movies: Movie[] }) {
+export function RecommendedCarousel() {
+  const [movies, setMovies] = React.useState<Movie[] | null>(null);
   const trackRef = React.useRef<HTMLUListElement>(null);
   const [atStart, setAtStart] = React.useState(true);
   const [atEnd, setAtEnd] = React.useState(false);
+
+  React.useEffect(() => {
+    let ignore = false;
+    getRecommendedMovies()
+      .then((res) => {
+        if (!ignore) setMovies(res.data);
+      })
+      .catch((error) => console.error("Failed to load movies:", error));
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const updateEdges = React.useCallback(() => {
     const el = trackRef.current;
@@ -37,7 +44,7 @@ export function RecommendedCarousel({ movies }: { movies: Movie[] }) {
       el.removeEventListener("scroll", updateEdges);
       window.removeEventListener("resize", updateEdges);
     };
-  }, [updateEdges]);
+  }, [updateEdges, movies]);
 
   function scrollBy(dir: 1 | -1) {
     const el = trackRef.current;
@@ -46,53 +53,82 @@ export function RecommendedCarousel({ movies }: { movies: Movie[] }) {
   }
 
   return (
-    <Section aria-labelledby="recommended-heading">
-      <div className="relative">
-        <SectionHeading
-          id="recommended-heading"
-          eyebrow="Trending now"
-          title="Recommended for you"
-          description="Hand-picked from what's popular, top-rated, and trending in your city this week."
-        />
+    <div className="relative">
+      <SectionHeading
+        id="recommended-heading"
+        eyebrow="Trending now"
+        title="Recommended for you"
+        description="Hand-picked from what's popular, top-rated, and trending in your city this week."
+      />
 
-        {/* Arrow controls */}
-        <div className="absolute top-1 right-0 hidden gap-2 sm:flex">
-          <button
-            type="button"
-            aria-label="Scroll left"
-            onClick={() => scrollBy(-1)}
-            disabled={atStart}
-            className="grid size-9 place-items-center rounded-full border border-border bg-background transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-          >
-            <ChevronLeft className="size-5" />
-          </button>
-          <button
-            type="button"
-            aria-label="Scroll right"
-            onClick={() => scrollBy(1)}
-            disabled={atEnd}
-            className="grid size-9 place-items-center rounded-full border border-border bg-background transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-          >
-            <ChevronRight className="size-5" />
-          </button>
-        </div>
+      {/* Arrow controls */}
+      <div className="absolute top-1 right-0 hidden gap-2 sm:flex">
+        <button
+          type="button"
+          aria-label="Scroll left"
+          onClick={() => scrollBy(-1)}
+          disabled={atStart}
+          className="grid size-9 place-items-center rounded-full border border-border bg-background transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+        >
+          <ChevronLeft className="size-5" />
+        </button>
+        <button
+          type="button"
+          aria-label="Scroll right"
+          onClick={() => scrollBy(1)}
+          disabled={atEnd}
+          className="grid size-9 place-items-center rounded-full border border-border bg-background transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+        >
+          <ChevronRight className="size-5" />
+        </button>
+      </div>
 
+      {movies === null ? (
+        <RecommendedSkeleton />
+      ) : movies.length ? (
         <ul
           ref={trackRef}
           className={cn(
             "scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 sm:mx-0 sm:px-0",
           )}
         >
-          {movies.map((movie) => (
+          {movies.map((movie, i) => (
             <li
               key={movie.id}
-              className="w-[42vw] shrink-0 snap-start sm:w-44 lg:w-48"
+              className="w-[60vw] shrink-0 snap-start rounded-2xl border border-primary/20 sm:w-56 lg:w-60"
             >
-              <MovieCard movie={movie} />
+              <MoviesListCard movie={movie} priority={i < 5} />
             </li>
           ))}
         </ul>
-      </div>
-    </Section>
+      ) : (
+        <EmptyState message="No recommendations right now. Check back soon." />
+      )}
+    </div>
+  );
+}
+
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+      {message}
+    </div>
+  );
+}
+
+function RecommendedSkeleton() {
+  return (
+    <ul className="scrollbar-hide -mx-4 flex gap-4 overflow-hidden px-4 pb-2 sm:mx-0 sm:px-0">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <li
+          key={i}
+          className="flex w-[60vw] shrink-0 flex-col gap-3 sm:w-56 lg:w-60"
+        >
+          <div className="aspect-2/3 animate-pulse rounded-xl bg-muted" />
+          <div className="h-3.5 w-3/4 animate-pulse rounded bg-muted" />
+          <div className="h-3 w-1/2 animate-pulse rounded bg-muted" />
+        </li>
+      ))}
+    </ul>
   );
 }

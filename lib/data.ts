@@ -336,15 +336,6 @@ export const OFFERS: Offer[] = [
   },
 ];
 
-/** IDs grouped into recommendation rails, resolved to full movies on load. */
-const RECOMMENDED_IDS: Record<string, string[]> = {
-  trending: ["mv-001", "mv-006", "mv-003", "mv-008", "mv-010", "mv-002"],
-  popular: ["mv-006", "mv-001", "mv-008", "mv-004", "mv-009", "mv-007"],
-  topRated: ["mv-001", "mv-006", "mv-002", "mv-010", "mv-008", "mv-003"],
-};
-
-const byId = new Map(NOW_SHOWING.map((m) => [m.id, m]));
-
 /**
  * Simulated async loaders. They return resolved promises today, but having the
  * async boundary in place means swapping in real `fetch` calls (with caching /
@@ -354,24 +345,10 @@ export async function getNowShowing(): Promise<Movie[]> {
   return NOW_SHOWING;
 }
 
-export async function getComingSoon(): Promise<ComingSoonMovie[]> {
-  return COMING_SOON;
-}
-
 export async function getTheatres(): Promise<Theatre[]> {
   return THEATRES;
 }
 
 export async function getOffers(): Promise<Offer[]> {
   return OFFERS;
-}
-
-export async function getRecommended(): Promise<Movie[]> {
-  // Trending rail for the homepage carousel; de-duplicated, order preserved.
-  const ids = RECOMMENDED_IDS.trending;
-  return ids.map((id) => byId.get(id)).filter((m): m is Movie => Boolean(m));
-}
-
-export async function getHeroMovies(): Promise<Movie[]> {
-  return NOW_SHOWING.filter((m) => m.isPromoted);
 }

@@ -1,9 +1,4 @@
-import {
-  getNowShowing,
-  getOffers,
-  getRecommended,
-  getTheatres,
-} from "@/lib/data";
+import { getNowShowing, getOffers, getTheatres } from "@/lib/data";
 import { SITE } from "@/lib/constants";
 import { JsonLd } from "@/components/shared/json-ld";
 import { HeroCarousel } from "@/components/sections/hero-carousel";
@@ -19,9 +14,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function HomePage() {
   // Fetch every rail in parallel on the server.
-  const [nowShowing, recommended, theatres, offers] = await Promise.all([
+  const [nowShowing, theatres, offers] = await Promise.all([
     getNowShowing(),
-    getRecommended(),
     getTheatres(),
     getOffers(),
   ]);
@@ -70,9 +64,9 @@ export default async function HomePage() {
 
       <HeroCarousel />
 
-      <div className="mx-auto w-full max-w-7xl overflow-hidden sm:px-6 px-4 sm:py-14">
+      <div className="mx-auto w-full max-w-7xl overflow-hidden sm:px-6 px-4 sm:py-14 space-y-20">
         <MoviesSection />
-        <RecommendedCarousel movies={recommended} />
+        <RecommendedCarousel />
         <BrowseByLanguage />
         <BrowseByGenre />
         <FeaturedTheatres theatres={theatres} />

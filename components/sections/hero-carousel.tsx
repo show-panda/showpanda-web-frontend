@@ -125,17 +125,17 @@ export function HeroCarousel() {
                       </Link>
                     </Button>
 
-                    <Button
+                    {/* <Button
                       size="lg"
                       variant="outline"
                       className="h-11 border-primary-white/30 bg-primary-white/10 px-6 text-primary-white backdrop-blur-sm hover:bg-primary-white/20 hover:text-primary-white"
                       asChild
                     >
-                      <Link href="#now-showing">
+                      <Link href="#all-movies">
                         <Play className="size-4" />
                         Explore Movies
                       </Link>
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>

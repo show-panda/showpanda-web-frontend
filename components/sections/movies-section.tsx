@@ -5,12 +5,9 @@ import { getAllMovies } from "@/lib/api/landing.api";
 import { Movie } from "@/lib/types/landing.type";
 import { SectionHeading } from "@/components/shared/section-heading";
 import MoviesListCard from "../landing/movies-list-card";
-import Link from "next/link";
-import Image from "next/image";
 
 export function MoviesSection() {
   const [movies, setMovies] = useState<Movie[] | null>(null);
-  console.log("🚀 ~ MoviesSection ~ movies:", movies);
 
   useEffect(() => {
     let ignore = false;
@@ -26,9 +23,8 @@ export function MoviesSection() {
   }, []);
 
   return (
-    <>
+    <div id="all-movies">
       <SectionHeading
-        id="movies"
         eyebrow="In cinemas"
         title="Movies"
         description="Catch the latest blockbusters now showing, or get ahead of the queue for upcoming releases."
@@ -47,7 +43,7 @@ export function MoviesSection() {
       ) : (
         <EmptyState message="No movies are showing right now." />
       )}
-    </>
+    </div>
   );
 }
 

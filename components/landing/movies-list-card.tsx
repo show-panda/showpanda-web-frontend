@@ -16,15 +16,15 @@ export default function MoviesListCard({
   priority = false,
 }: MoviesListCardProps) {
   return (
-    <Link href={`/movies/${movie.slug}`} className="rounded-2xl h-full w-full group">
+    <Link href={`/movies/${movie.slug}`} className="group h-full w-full">
       <Image
         src={posterFor(movie.slug)}
         alt={`${movie.title} poster`}
-        width={240}
-        height={360}
+        width={220}
+        height={280}
         priority={priority}
         loading={priority ? undefined : "lazy"}
-        className="aspect-2/3 h-90 w-auto object-cover rounded-t-2xl"
+        className="w-full h-70 object-cover rounded-t-2xl"
       />
 
       <div className="flex flex-col gap-1 px-3 py-4">
