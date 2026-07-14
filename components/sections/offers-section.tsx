@@ -77,7 +77,7 @@ export function OffersSection({ offers }: { offers: Offer[] }) {
                   </Badge>
                 </div>
 
-                <h3 className="relative mt-4 font-heading text-base font-semibold text-balance">
+                <h3 className="relative mt-4  text-base font-semibold text-balance">
                   {offer.title}
                 </h3>
                 <p className="relative mt-1 flex-1 text-sm text-muted-foreground">

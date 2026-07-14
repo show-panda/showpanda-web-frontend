@@ -31,9 +31,7 @@ export function BrowseByGenre() {
               >
                 {genre.glyph}
               </span>
-              <span className="font-heading text-base font-semibold">
-                {genre.name}
-              </span>
+              <span className=" text-base font-semibold">{genre.name}</span>
               <ArrowUpRight
                 className="absolute top-3 left-3 size-4 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-70"
                 aria-hidden

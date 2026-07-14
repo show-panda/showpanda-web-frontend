@@ -49,9 +49,7 @@ export function FeaturedTheatres({ theatres }: { theatres: Theatre[] }) {
                   </div>
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-heading text-base font-semibold">
-                    {theatre.name}
-                  </h3>
+                  <h3 className=" text-base font-semibold">{theatre.name}</h3>
                   <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                     <MapPin className="size-3.5 shrink-0" aria-hidden />
                     {theatre.locality}, {theatre.city}

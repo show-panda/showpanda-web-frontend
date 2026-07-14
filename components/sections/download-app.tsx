@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { Apple, Play, QrCode, BellRing, Ticket, Wallet, Zap } from "lucide-react";
+import {
+  Apple,
+  Play,
+  QrCode,
+  BellRing,
+  Ticket,
+  Wallet,
+  Zap,
+} from "lucide-react";
 
 import { SITE } from "@/lib/constants";
 import { Section } from "@/components/shared/section";
@@ -39,12 +47,14 @@ function QrPlaceholder() {
       aria-label="QR code to download the app"
     >
       {pattern.flatMap((row, r) =>
-        row.split("").map((cell, c) => (
-          <span
-            key={`${r}-${c}`}
-            className={cell === "1" ? "bg-black" : "bg-white"}
-          />
-        )),
+        row
+          .split("")
+          .map((cell, c) => (
+            <span
+              key={`${r}-${c}`}
+              className={cell === "1" ? "bg-black" : "bg-white"}
+            />
+          )),
       )}
     </div>
   );
@@ -71,7 +81,7 @@ function StoreButton({
         <span className="text-[0.65rem] tracking-wide text-white/70">
           {top}
         </span>
-        <span className="font-heading text-base font-semibold">{bottom}</span>
+        <span className=" text-base font-semibold">{bottom}</span>
       </span>
     </Link>
   );
@@ -94,7 +104,7 @@ export function DownloadApp() {
             </p>
             <h2
               id="app-heading"
-              className="font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl"
+              className=" text-3xl font-bold tracking-tight text-balance sm:text-4xl"
             >
               Your cinema, in your pocket.
             </h2>
@@ -131,8 +141,11 @@ export function DownloadApp() {
 
           <div className="flex items-center justify-center gap-4 lg:justify-end">
             <div className="hidden text-right text-primary-white sm:block">
-              <QrCode className="ml-auto mb-2 size-6 text-white/80" aria-hidden />
-              <p className="font-heading text-lg font-semibold">Scan to install</p>
+              <QrCode
+                className="ml-auto mb-2 size-6 text-white/80"
+                aria-hidden
+              />
+              <p className=" text-lg font-semibold">Scan to install</p>
               <p className="max-w-40 text-sm text-white/80">
                 Point your camera to grab the app instantly.
               </p>

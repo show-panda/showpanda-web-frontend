@@ -47,9 +47,7 @@ export function SiteFooter({ className }: { className?: string }) {
           {/* Link columns */}
           {FOOTER_COLUMNS.map((column) => (
             <nav key={column.title} aria-label={column.title}>
-              <h3 className="font-heading text-sm font-semibold">
-                {column.title}
-              </h3>
+              <h3 className=" text-sm font-semibold">{column.title}</h3>
               <ul className="mt-3 space-y-2.5">
                 {column.links.map((link) => (
                   <li key={link.label}>

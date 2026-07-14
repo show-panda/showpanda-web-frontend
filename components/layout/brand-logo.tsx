@@ -25,7 +25,7 @@ export function BrandLogo({
 
       <span
         className={cn(
-          "text-brand font-heading text-xl font-bold tracking-tight",
+          "text-brand  text-xl font-bold tracking-tight",
           compact && "sr-only sm:not-sr-only",
         )}
       >

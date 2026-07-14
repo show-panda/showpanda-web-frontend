@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
-  /** Used to wire the heading to its section landmark for a11y. */
   id?: string;
   eyebrow?: string;
   title: string;
@@ -14,11 +13,6 @@ interface SectionHeadingProps {
   className?: string;
 }
 
-/**
- * Consistent section header used across the page. Renders a labelled heading
- * with an optional eyebrow and a right-aligned link, keeping vertical rhythm
- * and typography uniform between sections.
- */
 export function SectionHeading({
   id,
   eyebrow,
@@ -40,12 +34,14 @@ export function SectionHeading({
             {eyebrow}
           </p>
         ) : null}
+
         <h2
           id={id}
           className="font-heading text-2xl font-semibold tracking-tight text-balance sm:text-3xl"
         >
           {title}
         </h2>
+
         {description ? (
           <p className="mt-2 text-sm text-muted-foreground sm:text-base">
             {description}

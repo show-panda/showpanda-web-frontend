@@ -1,5 +1,4 @@
 import {
-  getComingSoon,
   getNowShowing,
   getOffers,
   getRecommended,
@@ -20,14 +19,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function HomePage() {
   // Fetch every rail in parallel on the server.
-  const [nowShowing, comingSoon, recommended, theatres, offers] =
-    await Promise.all([
-      getNowShowing(),
-      getComingSoon(),
-      getRecommended(),
-      getTheatres(),
-      getOffers(),
-    ]);
+  const [nowShowing, recommended, theatres, offers] = await Promise.all([
+    getNowShowing(),
+    getRecommended(),
+    getTheatres(),
+    getOffers(),
+  ]);
 
   // Structured data for richer search results.
   const jsonLd = {
@@ -72,13 +69,16 @@ export default async function HomePage() {
       <JsonLd data={jsonLd} />
 
       <HeroCarousel />
-      <MoviesSection nowShowing={nowShowing} comingSoon={comingSoon} />
-      <RecommendedCarousel movies={recommended} />
-      <BrowseByLanguage />
-      <BrowseByGenre />
-      <FeaturedTheatres theatres={theatres} />
-      <OffersSection offers={offers} />
-      <DownloadApp />
+
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+        <MoviesSection />
+        <RecommendedCarousel movies={recommended} />
+        <BrowseByLanguage />
+        <BrowseByGenre />
+        <FeaturedTheatres theatres={theatres} />
+        <OffersSection offers={offers} />
+        <DownloadApp />
+      </div>
     </main>
   );
 }

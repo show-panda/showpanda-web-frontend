@@ -38,7 +38,7 @@ export function ComingSoonCard({ movie }: { movie: ComingSoonMovie }) {
       </Link>
 
       <div className="mt-3 flex flex-1 flex-col gap-1">
-        <h3 className="truncate font-heading text-sm font-semibold">
+        <h3 className="truncate  text-sm font-semibold">
           <Link href={`/movies/${movie.slug}`} className="hover:underline">
             {movie.title}
           </Link>

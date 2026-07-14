@@ -59,7 +59,7 @@ export function MovieCard({
       </Link>
 
       <div className="mt-3 flex flex-col gap-1">
-        <h3 className="truncate font-heading text-sm font-semibold">
+        <h3 className="truncate  text-sm font-semibold">
           <Link
             href={`/movies/${movie.slug}`}
             className="outline-none after:absolute hover:underline focus-visible:underline"
