@@ -9,12 +9,13 @@ import { Separator } from "@/components/ui/separator";
 import { CONTAINER } from "@/components/shared/section";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { SOCIAL_ICONS } from "@/components/shared/brand-icons";
+import { cn } from "@/lib/utils";
 
-export function SiteFooter() {
+export function SiteFooter({ className }: { className?: string }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-8 border-t border-border bg-card/40">
+    <footer className={cn("mt-8 border-t border-border bg-card/40", className)}>
       <div className={CONTAINER}>
         <div className="grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
           {/* Brand + social */}

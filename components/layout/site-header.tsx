@@ -12,7 +12,7 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { SignUpButton } from "@/components/layout/authentication/sign-up-btn";
 
-export function SiteHeader() {
+export function SiteHeader({ className }: { className?: string }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
+        className,
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
           ? "glass border-b border-border shadow-lg shadow-black/5"
