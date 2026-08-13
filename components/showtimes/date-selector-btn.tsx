@@ -1,4 +1,3 @@
-import { Button } from "../ui/button";
 import { cn, formatDatePill } from "@/lib/utils";
 
 type DateSelectorButtonProps = {
@@ -15,10 +14,10 @@ export default function DateSelectorButton({
   const { weekday, day, month } = formatDatePill(date);
 
   return (
-    <Button
+    <button
       type="button"
       onClick={() => onSelect(date)}
-      aria-pressed={active}
+      // aria-pressed={active}
       className={cn(
         "flex min-w-16 shrink-0 flex-col items-center rounded-xl border px-3 py-2 transition-colors",
         active
@@ -29,6 +28,6 @@ export default function DateSelectorButton({
       <span className="text-[11px] font-medium uppercase">{weekday}</span>
       <span className="text-lg font-semibold leading-tight">{day}</span>
       <span className="text-[11px] uppercase opacity-90">{month}</span>
-    </Button>
+    </button>
   );
 }
