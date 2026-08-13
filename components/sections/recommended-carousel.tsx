@@ -1,8 +1,7 @@
 "use client";
 
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
 import { getRecommendedMovies } from "@/lib/api/landing.api";
 import type { Movie } from "@/lib/types/landing.type";
 import { cn } from "@/lib/utils";
@@ -10,12 +9,12 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import MoviesListCard from "../landing/movies-list-card";
 
 export function RecommendedCarousel() {
-  const [movies, setMovies] = React.useState<Movie[] | null>(null);
-  const trackRef = React.useRef<HTMLUListElement>(null);
-  const [atStart, setAtStart] = React.useState(true);
-  const [atEnd, setAtEnd] = React.useState(false);
+  const [movies, setMovies] = useState<Movie[] | null>(null);
+  const trackRef = useRef<HTMLUListElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let ignore = false;
     getRecommendedMovies()
       .then((res) => {
@@ -27,14 +26,14 @@ export function RecommendedCarousel() {
     };
   }, []);
 
-  const updateEdges = React.useCallback(() => {
+  const updateEdges = useCallback(() => {
     const el = trackRef.current;
     if (!el) return;
     setAtStart(el.scrollLeft <= 4);
     setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     updateEdges();
     const el = trackRef.current;
     if (!el) return;
