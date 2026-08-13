@@ -16,7 +16,10 @@ export default function MoviesListCard({
   priority = false,
 }: MoviesListCardProps) {
   return (
-    <Link href={`/movies/${movie.slug}`} className="group h-full w-full">
+    <Link
+      href={`/movies/${movie.slug}-${movie.id}`}
+      className="group h-full w-full"
+    >
       <Image
         src={posterFor(movie.slug)}
         alt={`${movie.title} poster`}
@@ -29,7 +32,8 @@ export default function MoviesListCard({
 
       <div className="flex flex-col gap-1 px-3 py-4">
         <h3 className="truncate text-sm font-semibold group-hover:underline">
-          <Link href={`/movies/${movie.slug}`}>{movie.title}</Link>
+          {/* <Link href={`/movies/${movie.slug}`}>{movie.title}</Link> */}
+          {movie.title}
         </h3>
 
         <p className="truncate text-xs text-primary-text/70">
