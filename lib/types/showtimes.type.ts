@@ -48,3 +48,33 @@ export type getMovieShowtimesApiResT = {
   message?: string;
   data: MovieShowtimes | null;
 };
+
+/** `/shows/:showId` — a single show with its movie, screen and venue. */
+export type ShowDetail = {
+  id: string;
+  startTime: string;
+  endTime: string;
+  status: string;
+  basePrice: string;
+  movieId: string;
+  screenId: string;
+  movie: Movie;
+  screen: {
+    id: string;
+    name: string;
+    totalSeats: number;
+    venueId: string;
+    venue: {
+      id: string;
+      name: string;
+      slug: string;
+      address: string;
+    };
+  };
+};
+
+export type getShowApiResT = {
+  code: number;
+  message?: string;
+  data: ShowDetail | null;
+};

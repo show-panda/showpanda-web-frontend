@@ -29,9 +29,20 @@ export function toDateKey(iso: string): string {
   return dateKeyFmt.format(new Date(iso));
 }
 
-/** ISO datetime -> "1:00 PM" (IST). */
+/** ISO datetime -> "1:00 PM" (IST). Normalise the narrow space + case. */
 export function formatShowTime(iso: string): string {
-  return timeFmt.format(new Date(iso));
+  return timeFmt.format(new Date(iso)).replace(/ /g, " ").toUpperCase();
+}
+
+const showDateFmt = new Intl.DateTimeFormat("en-IN", {
+  timeZone: IST,
+  day: "numeric",
+  month: "short",
+});
+
+/** ISO datetime -> "14 Aug" (IST). */
+export function formatShowDate(iso: string): string {
+  return showDateFmt.format(new Date(iso));
 }
 
 /** "2026-08-13" -> { weekday: "Wed", day: "13", month: "Aug" } for date pills. */

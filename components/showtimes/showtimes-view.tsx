@@ -6,6 +6,7 @@ import type { MovieShowType, ShowtimeVenue } from "@/lib/types/showtimes.type";
 import { formatMoney } from "@/lib/format";
 import { cn, formatShowTime, toDateKey } from "@/lib/utils";
 import DateSelectorButton from "./date-selector-btn";
+import Link from "next/link";
 
 /** Unique days (IST) that have shows, earliest first. */
 function getShowDates(venues: ShowtimeVenue[]) {
@@ -23,33 +24,6 @@ function getShowsForDate(shows: MovieShowType[], date: string) {
   return shows
     .filter((show) => toDateKey(show.startTime) === date)
     .sort((a, b) => a.startTime.localeCompare(b.startTime));
-}
-
-function ShowButton({ show }: { show: MovieShowType }) {
-  const soldOut = show.availableSeats <= 0;
-
-  return (
-    <button
-      type="button"
-      disabled={soldOut}
-      title={`${formatMoney(show.basePrice)} · ${
-        soldOut ? "Sold out" : `${show.availableSeats} seats available`
-      }`}
-      className={cn(
-        "min-w-24 rounded-lg border px-3 py-2 text-center transition-colors",
-        soldOut
-          ? "border-primary/20 text-muted-foreground line-through opacity-60"
-          : "border-emerald-500/50 text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-400",
-      )}
-    >
-      <span className="block text-sm font-semibold">
-        {formatShowTime(show.startTime)}
-      </span>
-      <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">
-        {show.screenName}
-      </span>
-    </button>
-  );
 }
 
 export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
@@ -99,7 +73,30 @@ export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
 
               <div className="flex flex-wrap gap-2.5">
                 {showsToday.map((show) => (
-                  <ShowButton key={show.showId} show={show} />
+                  <Link
+                    href={`/seat-layout/${show.showId}`}
+                    key={show.showId}
+                    type="button"
+                    // disabled={show.availableSeats <= 0}
+                    // title={`${formatMoney(show.basePrice)} · ${
+                    //   show.availableSeats <= 0
+                    //     ? "Sold out"
+                    //     : `${show.availableSeats} seats available`
+                    // }`}
+                    className={cn(
+                      "min-w-24 rounded-lg border px-3 py-2 text-center transition-colors",
+                      show.availableSeats <= 0
+                        ? "border-primary/20 text-muted-foreground line-through opacity-60"
+                        : "border-emerald-500/50 text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-400",
+                    )}
+                  >
+                    <span className="block text-sm font-semibold">
+                      {formatShowTime(show.startTime)}
+                    </span>
+                    <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">
+                      {show.screenName}
+                    </span>
+                  </Link>
                 ))}
               </div>
             </li>

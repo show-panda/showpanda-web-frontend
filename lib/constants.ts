@@ -144,3 +144,5 @@ export const LEGAL_LINKS: NavLink[] = [
   { label: "Terms of Service", href: "/legal/terms" },
   { label: "Cookie Policy", href: "/legal/cookies" },
 ];
+
+export const MAX_SEATS = 10;
