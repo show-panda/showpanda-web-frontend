@@ -17,10 +17,13 @@ export type getShowSeatsApiResT = {
   data: Seat[] | null;
 };
 
-/** A single row of seats within a category, seats ordered left-to-right. */
+/** One slot in a row: a seat, or `null` for an aisle / missing position. */
+export type SeatCell = Seat | null;
+
+/** A single row rendered as a fixed-width array of cells (nulls = aisles). */
 export type SeatRow = {
   row: string;
-  seats: Seat[];
+  cells: SeatCell[];
 };
 
 /** A pricing/category block (e.g. RECLINER) with its rows, back row first. */

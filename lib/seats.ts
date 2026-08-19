@@ -1,10 +1,17 @@
-import type { Seat, SeatRow, SeatSection } from "./types/seats.type";
+import type { Seat, SeatCell, SeatSection } from "./types/seats.type";
 
 /**
- * Group seats into category sections, ordered back-of-hall first (highest row
- * letter) so the screen sits below the front row — matching the real theatre.
+ * Turn the flat seat list into category sections, each holding a 2D matrix of
+ * rows × columns. Every row is padded to the same width; a seat sits at index
+ * `number - 1` and empty slots stay `null` — those render as aisles/gaps, so
+ * any hall layout the backend sends is reproduced without hard-coding.
+ *
+ * Sections are ordered back-of-hall first (highest row letter) so the screen
+ * sits below the front row.
  */
 export function buildSections(seats: Seat[]): SeatSection[] {
+  const columns = Math.max(...seats.map((s) => s.number));
+
   const byCategory = new Map<string, Seat[]>();
   for (const seat of seats) {
     const list = byCategory.get(seat.category) ?? [];
@@ -15,15 +22,14 @@ export function buildSections(seats: Seat[]): SeatSection[] {
   const sections = [...byCategory].map(([category, categorySeats]) => ({
     category,
     price: categorySeats[0].price,
-    rows: buildRows(categorySeats),
+    rows: buildRows(categorySeats, columns),
   }));
 
-  // rows[0] is the back-most row of the section; sort sections by it, descending.
   return sections.sort((a, b) => b.rows[0].row.localeCompare(a.rows[0].row));
 }
 
-/** Rows within a section, back row first, seats left-to-right by number. */
-function buildRows(seats: Seat[]): SeatRow[] {
+/** Rows within a section as matrices, back row first. */
+function buildRows(seats: Seat[], columns: number) {
   const byRow = new Map<string, Seat[]>();
   for (const seat of seats) {
     const list = byRow.get(seat.row) ?? [];
@@ -32,9 +38,15 @@ function buildRows(seats: Seat[]): SeatRow[] {
   }
 
   return [...byRow]
-    .map(([row, rowSeats]) => ({
-      row,
-      seats: rowSeats.sort((a, b) => a.number - b.number),
-    }))
+    .map(([row, rowSeats]) => ({ row, cells: toRow(rowSeats, columns) }))
     .sort((a, b) => b.row.localeCompare(a.row));
+}
+
+/** Place each seat at column `number - 1`; untouched slots stay null (aisles). */
+function toRow(seats: Seat[], columns: number): SeatCell[] {
+  const cells: SeatCell[] = Array(columns).fill(null);
+  for (const seat of seats) {
+    cells[seat.number - 1] = seat;
+  }
+  return cells;
 }

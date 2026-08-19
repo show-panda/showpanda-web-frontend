@@ -16,7 +16,6 @@ export function SeatButton({ seat, selected, onToggle }: SeatButtonProps) {
       type="button"
       disabled={sold}
       onClick={() => onToggle(seat)}
-      style={{ gridColumnStart: seat.number }}
       title={`${seat.row}${seat.number} · ${formatMoney(seat.price)}`}
       className={cn(
         "grid size-7 place-items-center rounded-md border text-[11px] transition-colors",

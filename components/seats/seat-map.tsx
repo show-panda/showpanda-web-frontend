@@ -16,8 +16,6 @@ export function SeatMap({ seats }: { seats: Seat[] }) {
   const selectedIds = new Set(selected.map((s) => s.showSeatId));
   const total = selected.reduce((sum, s) => sum + Number(s.price), 0);
 
-  // Widest row decides the column count so every row lines up like the hall.
-  const columns = Math.max(...seats.map((s) => s.number));
   const sections = buildSections(seats);
 
   function toggleSeat(seat: Seat) {
@@ -38,7 +36,6 @@ export function SeatMap({ seats }: { seats: Seat[] }) {
             <SeatCategory
               key={section.category}
               section={section}
-              columns={columns}
               selectedIds={selectedIds}
               onToggle={toggleSeat}
             />

@@ -4,14 +4,12 @@ import { SeatButton } from "./seat-button";
 
 type SeatCategoryProps = {
   section: SeatSection;
-  columns: number;
   selectedIds: Set<string>;
   onToggle: (seat: Seat) => void;
 };
 
 export function SeatCategory({
   section,
-  columns,
   selectedIds,
   onToggle,
 }: SeatCategoryProps) {
@@ -24,23 +22,24 @@ export function SeatCategory({
       </div>
 
       <div className="space-y-1.5">
-        {section.rows.map(({ row, seats }) => (
+        {section.rows.map(({ row, cells }) => (
           <div key={row} className="flex items-center gap-3">
             <span className="w-4 text-right text-xs text-muted-foreground">
               {row}
             </span>
-            <div
-              className="grid gap-1.5"
-              style={{ gridTemplateColumns: `repeat(${columns}, 1.75rem)` }}
-            >
-              {seats.map((seat) => (
-                <SeatButton
-                  key={seat.showSeatId}
-                  seat={seat}
-                  selected={selectedIds.has(seat.showSeatId)}
-                  onToggle={onToggle}
-                />
-              ))}
+            <div className="flex gap-1.5">
+              {cells.map((seat, col) =>
+                seat ? (
+                  <SeatButton
+                    key={seat.showSeatId}
+                    seat={seat}
+                    selected={selectedIds.has(seat.showSeatId)}
+                    onToggle={onToggle}
+                  />
+                ) : (
+                  <span key={col} className="size-7" aria-hidden />
+                ),
+              )}
             </div>
           </div>
         ))}
