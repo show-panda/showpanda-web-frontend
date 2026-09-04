@@ -6,9 +6,11 @@ import {
   Popcorn,
   ShieldCheck,
   Ticket,
+  TriangleAlert,
 } from "lucide-react";
 
-import { LEGAL_LINKS, SITE } from "@/lib/constants";
+import { sanitizeNextPath } from "@/lib/auth-session";
+import { SITE } from "@/lib/constants";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { GoogleSignInButton } from "@/components/layout/authentication/google-sign-in-btn";
 
@@ -26,20 +28,21 @@ const PERKS = [
   { icon: Popcorn, text: "Member-only offers on snacks and combos" },
 ];
 
-//  Only allow same-origin, path-relative returns. Anything else (absolute URLs, protocol-relative `//evil.com`)
-function safeRedirect(value: string | string[] | undefined) {
-  if (typeof value !== "string") return undefined;
-  if (!value.startsWith("/") || value.startsWith("//")) return undefined;
-  return value;
-}
+const ERRORS: Record<string, string> = {
+  callback:
+    "We couldn't complete that sign-in. Please try again from this page.",
+  unavailable: "Sign-in is unavailable right now. Please try again later.",
+};
 
 type SignInPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export default async function SignInPage({ searchParams }: SignInPageProps) {
-  const { next } = await searchParams;
-  const redirectTo = safeRedirect(next);
+  const { next, error } = await searchParams;
+
+  const nextPath = sanitizeNextPath(next);
+  const errorMessage = typeof error === "string" ? ERRORS[error] : undefined;
 
   return (
     <main id="main" className="min-h-screen lg:flex">
@@ -67,8 +70,24 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
               Sign in to continue booking your movie experience.
             </p>
 
+            {errorMessage && (
+              <div
+                role="alert"
+                className="mt-6 flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-4"
+              >
+                <TriangleAlert
+                  className="mt-0.5 size-5 shrink-0 text-destructive"
+                  aria-hidden
+                />
+
+                <p className="text-sm leading-6 text-destructive">
+                  {errorMessage}
+                </p>
+              </div>
+            )}
+
             <div className="mt-8">
-              <GoogleSignInButton redirectTo={redirectTo} />
+              <GoogleSignInButton nextPath={nextPath} />
             </div>
 
             <div className="my-8 flex items-center gap-4">
