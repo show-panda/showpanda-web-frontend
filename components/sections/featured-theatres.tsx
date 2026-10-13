@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { MapPin, MonitorPlay, Clapperboard } from "lucide-react";
 
 import type { Theatre } from "@/lib/types";
@@ -17,16 +16,12 @@ export function FeaturedTheatres({ theatres }: { theatres: Theatre[] }) {
         eyebrow="Premium screens"
         title="Featured theatres"
         description="Recliners, Dolby Atmos and IMAX — discover the best-rated cinemas near you."
-        action={{ label: "All theatres", href: "/theatres" }}
       />
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {theatres.map((theatre) => (
           <li key={theatre.id}>
-            <Link
-              href={`/theatres/${theatre.id}`}
-              className="group block rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-            >
-              <Card className="gap-0 py-0 transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
+            <div>
+              <Card className="gap-0 py-0">
                 <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                   <Image
                     src={theatre.image}
@@ -34,7 +29,7 @@ export function FeaturedTheatres({ theatres }: { theatres: Theatre[] }) {
                     fill
                     loading="lazy"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute right-3 bottom-3 left-3 flex flex-wrap gap-1.5">
@@ -66,7 +61,7 @@ export function FeaturedTheatres({ theatres }: { theatres: Theatre[] }) {
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+            </div>
           </li>
         ))}
       </ul>

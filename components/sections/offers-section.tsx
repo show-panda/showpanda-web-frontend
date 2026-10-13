@@ -44,7 +44,6 @@ export function OffersSection({ offers }: { offers: Offer[] }) {
         eyebrow="Save more"
         title="Offers & promotions"
         description="Bank discounts, card deals and combos that stack with every booking."
-        action={{ label: "All offers", href: "/offers" }}
       />
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {offers.map((offer) => {

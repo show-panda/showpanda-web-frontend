@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { SITE } from "@/lib/constants";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { AuthProvider } from "@/components/providers/auth-provider";
 import { cn } from "@/lib/utils";
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -78,7 +79,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthProvider>{children}</AuthProvider>
 
           <Toaster position="bottom-center" richColors closeButton />
         </ThemeProvider>

@@ -24,6 +24,13 @@ export function ShowtimeTabs({ shows, activeShowId, date }: ShowtimeTabsProps) {
 
         {shows.map((show) => {
           const active = show.showId === activeShowId;
+          if (show.availableSeats <= 0 && !active) {
+            return (
+              <span key={show.showId} title="Sold out" className="shrink-0 rounded-xl border border-border px-5 py-3 text-sm text-muted-foreground opacity-60">
+                {formatShowTime(show.startTime)} · Sold out
+              </span>
+            );
+          }
           return (
             <Link
               key={show.showId}

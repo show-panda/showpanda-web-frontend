@@ -17,7 +17,7 @@ export default function DateSelectorButton({
     <button
       type="button"
       onClick={() => onSelect(date)}
-      // aria-pressed={active}
+      aria-pressed={active}
       className={cn(
         "flex min-w-16 shrink-0 flex-col items-center rounded-xl border px-3 py-2 transition-colors",
         active

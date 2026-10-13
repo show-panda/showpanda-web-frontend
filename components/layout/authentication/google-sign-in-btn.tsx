@@ -2,48 +2,65 @@
 
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
-
+import { toast } from "sonner";
+import config from "@/lib/config";
+import { rememberNextPath } from "@/lib/auth-return-path";
 import { cn } from "@/lib/utils";
 import { GoogleIcon } from "@/components/shared/brand-icons";
 import { Button } from "@/components/ui/button";
 
 /**
- * Starts the Google OAuth flow.
+ * Starts the Google OAuth flow on the API.
  *
- * A plain anchor rather than a `next/link` route change: `/api/auth/google`
- * redirects out to the provider, so the browser has to leave the app entirely.
+ * This is a full-page browser navigation (not a `next/link` route change) —
+ * the provider redirect has to leave the app entirely, so `fetch` can't be
+ * used here. The API takes over and sends the browser back to
+ * `/auth/callback` with the tokens once Google has answered.
  */
 export function GoogleSignInButton({
-  nextPath,
+  redirectTo,
   className,
 }: {
-  nextPath: string;
+  /** Explicit landing page. Without it the user returns to the previous page. */
+  redirectTo?: string;
   className?: string;
 }) {
-  // Held until the browser leaves the page, so the link can't be fired twice
-  // while the redirect is in flight.
   const [pending, setPending] = useState(false);
+
+  const handleSignIn = () => {
+    if (!config.apiURL) {
+      toast.error("Sign-in is unavailable right now. Please try again later.");
+      return;
+    }
+
+    // Kept until the browser leaves the page, so the button can't be
+    // double-submitted while the redirect is in flight.
+    setPending(true);
+
+    // The API's callback carries only the tokens, so the page to return to
+    // waits in this tab until `/auth/callback` picks it up.
+    rememberNextPath(redirectTo);
+
+    window.location.href = new URL("/auth/google", config.apiURL).toString();
+  };
 
   return (
     <Button
-      asChild
-      aria-disabled={pending}
-      onClick={() => setPending(true)}
+      type="button"
+      onClick={handleSignIn}
+      disabled={pending}
       className={cn(
-        "flex h-13 w-full items-center justify-center gap-3 rounded-xl border border-border bg-background text-sm font-semibold text-foreground shadow-sm transition-all hover:bg-muted hover:shadow-md focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-        pending && "pointer-events-none opacity-60",
+        "flex h-13 w-full items-center justify-center gap-3 rounded-xl border border-border bg-background text-sm font-semibold text-foreground shadow-sm transition-all hover:bg-muted hover:shadow-md focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60",
         className,
       )}
     >
-      <a href={`/api/auth/google?next=${encodeURIComponent(nextPath)}`}>
-        {pending ? (
-          <LoaderCircle className="size-5 animate-spin text-muted-foreground" />
-        ) : (
-          <GoogleIcon className="size-5" />
-        )}
+      {pending ? (
+        <LoaderCircle className="size-5 animate-spin text-muted-foreground" />
+      ) : (
+        <GoogleIcon className="size-5" />
+      )}
 
-        <span>{pending ? "Redirecting…" : "Continue with Google"}</span>
-      </a>
+      <span>{pending ? "Redirecting…" : "Continue with Google"}</span>
     </Button>
   );
 }

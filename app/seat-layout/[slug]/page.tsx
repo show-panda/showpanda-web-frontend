@@ -51,7 +51,13 @@ export default async function SeatLayoutPage({ params }: SeatLayoutPageProps) {
       />
 
       <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
-        <SeatMap seats={seatsRes.data ?? []} />
+        {seatsRes.code === 200 && Array.isArray(seatsRes.data) ? (
+          <SeatMap seats={seatsRes.data} />
+        ) : (
+          <p role="alert" className="py-16 text-center text-muted-foreground">
+            Seats are unavailable right now. Please try again later.
+          </p>
+        )}
       </div>
     </div>
   );

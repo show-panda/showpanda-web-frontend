@@ -8,14 +8,20 @@ import MoviesListCard from "../landing/movies-list-card";
 
 export function MoviesSection() {
   const [movies, setMovies] = useState<Movie[] | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let ignore = false;
     getAllMovies()
       .then((res) => {
-        if (!ignore) setMovies(res.data);
+        if (!ignore) {
+          if (res.code === 200 && Array.isArray(res.data)) setMovies(res.data);
+          else setFailed(true);
+        }
       })
-      .catch((error) => console.error("Failed to load movies:", error));
+      .catch(() => {
+        if (!ignore) setFailed(true);
+      });
 
     return () => {
       ignore = true;
@@ -30,7 +36,9 @@ export function MoviesSection() {
         description="Catch the latest blockbusters now showing, or get ahead of the queue for upcoming releases."
       />
 
-      {movies === null ? (
+      {failed ? (
+        <EmptyState message="Movies are unavailable right now. Please try again later." />
+      ) : movies === null ? (
         <MovieGridSkeleton />
       ) : movies.length ? (
         <ul className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-5">

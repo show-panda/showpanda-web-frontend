@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, Ticket, Clock } from "lucide-react";
+import { Ticket, Clock } from "lucide-react";
 import { getCarouselMovies } from "@/lib/api/landing.api";
 import type { Movie } from "@/lib/types/landing.type";
 import { formatRuntime } from "@/lib/format";
@@ -22,15 +22,21 @@ const ROTATE_MS = 6500;
 
 export function HeroCarousel() {
   const [movies, setMovies] = useState<Movie[] | null>(null);
+  const [failed, setFailed] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
     let ignore = false;
     getCarouselMovies()
       .then((res) => {
-        if (!ignore) setMovies(res.data);
+        if (!ignore) {
+          if (res.code === 200 && Array.isArray(res.data)) setMovies(res.data);
+          else setFailed(true);
+        }
       })
-      .catch((error) => console.error("Failed to load movies:", error));
+      .catch(() => {
+        if (!ignore) setFailed(true);
+      });
     return () => {
       ignore = true;
     };
@@ -43,9 +49,15 @@ export function HeroCarousel() {
     return () => window.clearInterval(id);
   }, [api]);
 
-  if (!movies?.length) {
+  if (failed) {
+    return <div className="flex min-h-64 items-center justify-center bg-muted px-6 text-center text-muted-foreground">Featured movies are unavailable right now. Please try again later.</div>;
+  }
+
+  if (movies === null) {
     return <div className="h-[78vh] min-h-130 w-full animate-pulse bg-muted" />;
   }
+
+  if (movies.length === 0) return null;
 
   return (
     <Carousel
@@ -57,16 +69,8 @@ export function HeroCarousel() {
         {movies.map((movie, index) => (
           <CarouselItem key={movie.id} className="relative pl-0">
             <div className="relative h-[78vh] min-h-130 w-full overflow-hidden">
-              {/* <Image
-                src={movie.posterUrl}
-                alt=""
-                fill
-                priority={index === 0}
-                sizes="100vw"
-                className="object-cover"
-              /> */}
               <Image
-                src={"https://picsum.photos/seed/kingdom-ash/1920/1080"}
+                src={`https://picsum.photos/seed/${encodeURIComponent(movie.slug)}/1920/1080`}
                 alt=""
                 fill
                 priority={index === 0}
@@ -119,7 +123,7 @@ export function HeroCarousel() {
                       className="bg-brand-gradient h-11 border-0 px-6 text-primary-white shadow-lg shadow-brand/30"
                       asChild
                     >
-                      <Link href={`/movies/${movie.slug}`}>
+                      <Link href={`/movies/${movie.id}`}>
                         <Ticket className="size-4" />
                         Book Now
                       </Link>

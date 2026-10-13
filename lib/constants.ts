@@ -11,13 +11,12 @@ export const SITE = {
   name: "ShowPanda",
   tagline: "Book the movies you love.",
   description:
-    "Discover the latest movie releases, browse theatres and events near you, and book tickets in seconds — all on Cineplex.",
+    "Discover the latest movie releases, browse theatres near you, and choose seats on ShowPanda.",
 } as const;
 
 export const PRIMARY_NAV: NavLink[] = [
-  { label: "Movies", href: "/#now-showing" },
+  { label: "Movies", href: "/#all-movies" },
   // { label: "Theatres", href: "/#theatres" },
-  { label: "Events", href: "/#events" },
   { label: "Offers", href: "/#offers" },
 ];
 
@@ -123,10 +122,9 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Discover",
     links: [
-      { label: "Movies", href: "#now-showing" },
-      { label: "Theatres", href: "#theatres" },
-      { label: "Events", href: "#events" },
-      { label: "Offers", href: "#offers" },
+      { label: "Movies", href: "/#all-movies" },
+      { label: "Theatres", href: "/#theatres" },
+      { label: "Offers", href: "/#offers" },
     ],
   },
 ];

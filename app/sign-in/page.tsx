@@ -9,8 +9,8 @@ import {
   TriangleAlert,
 } from "lucide-react";
 
-import { sanitizeNextPath } from "@/lib/auth-session";
 import { SITE } from "@/lib/constants";
+import { safeAuthReturnPath } from "@/lib/auth-return-path";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { GoogleSignInButton } from "@/components/layout/authentication/google-sign-in-btn";
 
@@ -28,10 +28,21 @@ const PERKS = [
   { icon: Popcorn, text: "Member-only offers on snacks and combos" },
 ];
 
+//  Only allow same-origin, path-relative returns. Anything else (absolute URLs, protocol-relative `//evil.com`)
+function safeRedirect(value: string | string[] | undefined) {
+  if (typeof value !== "string") return undefined;
+  const safe = safeAuthReturnPath(value);
+  return safe === "/" && value !== "/" ? undefined : safe;
+}
+
+// Every failure the sign-in flow can redirect back with. The wording stays
+// generic on purpose — nothing about tokens or the API's internals.
 const ERRORS: Record<string, string> = {
   callback:
     "We couldn't complete that sign-in. Please try again from this page.",
-  unavailable: "Sign-in is unavailable right now. Please try again later.",
+  session:
+    "We couldn't verify your Google account. Please try signing in again.",
+  unavailable: "Sign-in is unavailable right now. Please try again in a moment.",
 };
 
 type SignInPageProps = {
@@ -41,7 +52,7 @@ type SignInPageProps = {
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const { next, error } = await searchParams;
 
-  const nextPath = sanitizeNextPath(next);
+  const redirectTo = safeRedirect(next);
   const errorMessage = typeof error === "string" ? ERRORS[error] : undefined;
 
   return (
@@ -87,7 +98,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             )}
 
             <div className="mt-8">
-              <GoogleSignInButton nextPath={nextPath} />
+              <GoogleSignInButton redirectTo={redirectTo} />
             </div>
 
             <div className="my-8 flex items-center gap-4">

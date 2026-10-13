@@ -11,11 +11,7 @@ export default async function MovieShowtimesPage({
   params,
 }: MovieShowtimesPageProps) {
   const { slug } = await params;
-  const slugParts = slug.split("-");
-
-  const movieId = slugParts[slugParts.length - 1];
-
-  const res = await getMovieShowtimes(movieId);
+  const res = await getMovieShowtimes(slug);
 
   if (res.code !== 200 || !res.data) notFound();
 

@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { MapPin } from "lucide-react";
 import type { MovieShowType, ShowtimeVenue } from "@/lib/types/showtimes.type";
-import { formatMoney } from "@/lib/format";
-import { cn, formatShowTime, toDateKey } from "@/lib/utils";
+import { formatShowTime, toDateKey } from "@/lib/utils";
 import DateSelectorButton from "./date-selector-btn";
 import Link from "next/link";
 
@@ -73,30 +72,26 @@ export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
 
               <div className="flex flex-wrap gap-2.5">
                 {showsToday.map((show) => (
-                  <Link
-                    href={`/seat-layout/${show.showId}`}
-                    key={show.showId}
-                    type="button"
-                    // disabled={show.availableSeats <= 0}
-                    // title={`${formatMoney(show.basePrice)} · ${
-                    //   show.availableSeats <= 0
-                    //     ? "Sold out"
-                    //     : `${show.availableSeats} seats available`
-                    // }`}
-                    className={cn(
-                      "min-w-24 rounded-lg border px-3 py-2 text-center transition-colors",
-                      show.availableSeats <= 0
-                        ? "border-primary/20 text-muted-foreground line-through opacity-60"
-                        : "border-emerald-500/50 text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-400",
-                    )}
-                  >
-                    <span className="block text-sm font-semibold">
-                      {formatShowTime(show.startTime)}
+                  show.availableSeats <= 0 ? (
+                    <span
+                      key={show.showId}
+                      title="Sold out"
+                      className="min-w-24 rounded-lg border border-primary/20 px-3 py-2 text-center text-muted-foreground opacity-60"
+                    >
+                      <span className="block text-sm font-semibold">{formatShowTime(show.startTime)}</span>
+                      <span className="mt-0.5 block text-[10px] uppercase tracking-wide">Sold out</span>
                     </span>
-                    <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">
-                      {show.screenName}
-                    </span>
-                  </Link>
+                  ) : (
+                    <Link
+                      href={`/seat-layout/${show.showId}`}
+                      key={show.showId}
+                      title={`${show.availableSeats} seats available`}
+                      className="min-w-24 rounded-lg border border-emerald-500/50 px-3 py-2 text-center text-emerald-700 transition-colors hover:bg-emerald-500/10 dark:text-emerald-400"
+                    >
+                      <span className="block text-sm font-semibold">{formatShowTime(show.startTime)}</span>
+                      <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">{show.screenName}</span>
+                    </Link>
+                  )
                 ))}
               </div>
             </li>

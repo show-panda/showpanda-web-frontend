@@ -1,4 +1,4 @@
-import { getNowShowing, getOffers, getTheatres } from "@/lib/data";
+import { getOffers, getTheatres } from "@/lib/data";
 import { SITE } from "@/lib/constants";
 import { JsonLd } from "@/components/shared/json-ld";
 import { HeroCarousel } from "@/components/sections/hero-carousel";
@@ -13,12 +13,7 @@ import { DownloadApp } from "@/components/sections/download-app";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function HomePage() {
-  // Fetch every rail in parallel on the server.
-  const [nowShowing, theatres, offers] = await Promise.all([
-    getNowShowing(),
-    getTheatres(),
-    getOffers(),
-  ]);
+  const [theatres, offers] = await Promise.all([getTheatres(), getOffers()]);
 
   // Structured data for richer search results.
   const jsonLd = {
@@ -28,32 +23,6 @@ export default async function HomePage() {
         "@type": "WebSite",
         name: SITE.name,
         url: siteUrl,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${siteUrl}/search?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
-      },
-      {
-        "@type": "ItemList",
-        name: "Now Showing",
-        itemListElement: nowShowing.slice(0, 10).map((m, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          item: {
-            "@type": "Movie",
-            name: m.title,
-            genre: m.genres,
-            inLanguage: m.languages,
-            url: `${siteUrl}/movies/${m.slug}`,
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: m.rating,
-              bestRating: 10,
-              ratingCount: m.votes,
-            },
-          },
-        })),
       },
     ],
   };

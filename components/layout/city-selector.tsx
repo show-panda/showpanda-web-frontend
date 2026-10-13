@@ -24,7 +24,7 @@ const STORAGE_KEY = "showpanda.city";
 export function CitySelector({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const [cities, setCities] = useState<City[] | null>(null);
-  const [city, setCity] = useState<City | null>(cities?.[0] || null);
+  const [city, setCity] = useState<City | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -32,7 +32,23 @@ export function CitySelector({ className }: { className?: string }) {
     async function fetchCities() {
       try {
         const res = await getCitiesOptions();
-        if (!ignore) setCities(res.data);
+        if (!ignore && Array.isArray(res.data)) {
+          const options = res.data;
+          let savedId: string | undefined;
+          try {
+            const saved = window.localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+              const parsed: unknown = JSON.parse(saved);
+              if (parsed && typeof parsed === "object" && "id" in parsed && typeof parsed.id === "string") {
+                savedId = parsed.id;
+              }
+            }
+          } catch {
+            // Bad or unavailable storage should not prevent city selection.
+          }
+          setCities(options);
+          setCity(options.find((candidate) => candidate.id === savedId) ?? options[0] ?? null);
+        }
       } catch (error) {
         console.log("Error in getting cities data: ", error);
       }
@@ -45,15 +61,13 @@ export function CitySelector({ className }: { className?: string }) {
     };
   }, []);
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    // eslint-disable-next-line
-    if (saved) setCity(JSON.parse(saved));
-  }, []);
-
   const selectCity = (city: City) => {
     setCity(city);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(city));
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(city));
+    } catch {
+      // Selection still works for this page when persistence is blocked.
+    }
     setOpen(false);
   };
 
@@ -67,7 +81,7 @@ export function CitySelector({ className }: { className?: string }) {
       >
         <MapPin className="size-4 text-brand" />
 
-        <span className="max-w-28 truncate">{city?.name}</span>
+        <span className="max-w-28 truncate">{city?.name ?? "Select city"}</span>
 
         <ChevronDown
           className={cn(

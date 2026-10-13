@@ -17,7 +17,7 @@ export default function MoviesListCard({
 }: MoviesListCardProps) {
   return (
     <Link
-      href={`/movies/${movie.slug}-${movie.id}`}
+      href={`/movies/${movie.id}`}
       className="group h-full w-full"
     >
       <Image

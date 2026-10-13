@@ -70,10 +70,11 @@ export function SeatMap({ seats }: { seats: Seat[] }) {
               : "No seats selected"}
           </p>
           <Button
-            disabled={selected.length === 0}
+            disabled
+            title="Checkout is not available yet"
             className="bg-brand-gradient text-primary-white"
           >
-            Proceed
+            Checkout unavailable
           </Button>
         </div>
       </div>

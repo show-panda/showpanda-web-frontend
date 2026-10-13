@@ -10,7 +10,7 @@ import { SearchBar } from "@/components/layout/search-bar";
 import { CitySelector } from "@/components/layout/city-selector";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { SignUpButton } from "@/components/layout/authentication/sign-up-btn";
+import { AuthActions } from "@/components/layout/authentication/auth-actions";
 
 export function SiteHeader({ className }: { className?: string }) {
   const [scrolled, setScrolled] = useState(false);
@@ -56,7 +56,7 @@ export function SiteHeader({ className }: { className?: string }) {
 
           <ThemeToggle />
 
-          <SignUpButton />
+          <AuthActions />
 
           <MobileNav />
         </div>
