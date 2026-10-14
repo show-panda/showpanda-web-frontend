@@ -9,8 +9,7 @@ An online movie ticket booking app, in the style of BookMyShow.
 - TypeScript (strict)
 - Tailwind CSS v4
 - [shadcn/ui](https://ui.shadcn.com) — `radix-nova` style
-- `react-hook-form` + `zod` for forms
-- `framer-motion`, `next-themes`, `sonner`
+- `next-themes`, `sonner`
 
 ## Development
 

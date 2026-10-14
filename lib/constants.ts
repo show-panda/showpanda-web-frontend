@@ -1,8 +1,6 @@
 import type {
   City,
   FooterColumn,
-  Genre,
-  Language,
   NavLink,
   SocialLink,
 } from "@/lib/types";
@@ -16,8 +14,6 @@ export const SITE = {
 
 export const PRIMARY_NAV: NavLink[] = [
   { label: "Movies", href: "/#all-movies" },
-  // { label: "Theatres", href: "/#theatres" },
-  { label: "Offers", href: "/#offers" },
 ];
 
 export const CITIES: City[] = [
@@ -37,67 +33,6 @@ export const CITIES: City[] = [
   { id: "nagpur", name: "Nagpur" },
   { id: "bhopal", name: "Bhopal" },
   { id: "goa", name: "Goa" },
-];
-
-export const LANGUAGES: Language[] = [
-  { id: "hindi", name: "Hindi", native: "हिन्दी" },
-  { id: "english", name: "English", native: "English" },
-  { id: "tamil", name: "Tamil", native: "தமிழ்" },
-  { id: "telugu", name: "Telugu", native: "తెలుగు" },
-  { id: "malayalam", name: "Malayalam", native: "മലയാളം" },
-  { id: "kannada", name: "Kannada", native: "ಕನ್ನಡ" },
-  { id: "punjabi", name: "Punjabi", native: "ਪੰਜਾਬੀ" },
-];
-
-export const GENRES: Genre[] = [
-  {
-    id: "action",
-    name: "Action",
-    glyph: "💥",
-    gradient: "from-orange-500/25 to-red-600/25",
-  },
-  {
-    id: "comedy",
-    name: "Comedy",
-    glyph: "😂",
-    gradient: "from-amber-400/25 to-yellow-500/25",
-  },
-  {
-    id: "drama",
-    name: "Drama",
-    glyph: "🎭",
-    gradient: "from-violet-500/25 to-fuchsia-600/25",
-  },
-  {
-    id: "thriller",
-    name: "Thriller",
-    glyph: "🔪",
-    gradient: "from-slate-500/25 to-zinc-700/25",
-  },
-  {
-    id: "horror",
-    name: "Horror",
-    glyph: "👻",
-    gradient: "from-emerald-600/25 to-green-900/25",
-  },
-  {
-    id: "sci-fi",
-    name: "Sci-Fi",
-    glyph: "🚀",
-    gradient: "from-cyan-500/25 to-blue-700/25",
-  },
-  {
-    id: "romance",
-    name: "Romance",
-    glyph: "💞",
-    gradient: "from-pink-500/25 to-rose-600/25",
-  },
-  {
-    id: "adventure",
-    name: "Adventure",
-    glyph: "🧭",
-    gradient: "from-lime-500/25 to-teal-600/25",
-  },
 ];
 
 export const FOOTER_COLUMNS: FooterColumn[] = [
@@ -123,8 +58,6 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
     title: "Discover",
     links: [
       { label: "Movies", href: "/#all-movies" },
-      { label: "Theatres", href: "/#theatres" },
-      { label: "Offers", href: "/#offers" },
     ],
   },
 ];

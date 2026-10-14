@@ -1,10 +1,6 @@
 import { Movie } from "@/lib/types/landing.type";
-import Image from "next/image";
 import Link from "next/link";
-
-/** Deterministic placeholder poster (real API poster paths 404 today). */
-const posterFor = (slug: string) =>
-  `https://picsum.photos/seed/${slug}/480/720`;
+import { PosterImage } from "@/components/shared/poster-image";
 
 type MoviesListCardProps = {
   movie: Movie;
@@ -20,14 +16,13 @@ export default function MoviesListCard({
       href={`/movies/${movie.id}`}
       className="group h-full w-full"
     >
-      <Image
-        src={posterFor(movie.slug)}
+      <PosterImage
+        src={movie.posterUrl}
         alt={`${movie.title} poster`}
-        width={220}
-        height={280}
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 220px"
         priority={priority}
-        loading={priority ? undefined : "lazy"}
-        className="w-full h-70 object-cover rounded-t-2xl"
+        className="h-70 w-full rounded-t-2xl"
+        imageClassName="object-cover"
       />
 
       <div className="flex flex-col gap-1 px-3 py-4">

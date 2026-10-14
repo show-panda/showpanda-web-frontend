@@ -1,25 +1,19 @@
-import Image from "next/image";
 import { Clock } from "lucide-react";
 import type { Movie } from "@/lib/types/landing.type";
 import { formatReleaseDate, formatRuntime } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
-
-/** Real TMDB poster paths 404 today — fall back to a deterministic stand-in. */
-const posterFor = (movie: Movie) =>
-  movie.posterUrl?.startsWith("https://image.tmdb.org")
-    ? `https://picsum.photos/seed/${movie.slug}/480/720`
-    : movie.posterUrl || `https://picsum.photos/seed/${movie.slug}/480/720`;
+import { PosterImage } from "@/components/shared/poster-image";
 
 export function MovieShowtimesHeader({ movie }: { movie: Movie }) {
   return (
     <div className="mx-auto flex w-full max-w-7xl items-center gap-4 px-4 py-5 sm:gap-6 sm:px-6 sm:py-7">
-      <Image
-        src={posterFor(movie)}
+      <PosterImage
+        src={movie.posterUrl}
         alt={`${movie.title} poster`}
-        width={80}
-        height={120}
+        sizes="80px"
         priority
-        className="sm:h-28 sm:w-20 h-25 w-18 shrink-0 rounded-lg object-cover shadow-sm"
+        className="sm:h-28 sm:w-20 h-25 w-18 shrink-0 rounded-lg shadow-sm"
+        imageClassName="object-cover"
       />
 
       <div className="min-w-0 flex-1">

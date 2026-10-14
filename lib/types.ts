@@ -1,9 +1,7 @@
 /**
  * Domain types for the booking platform.
  *
- * These mirror the shape we'd expect from a real catalog/booking API, so the
- * UI can be wired to a backend later by swapping the mock loaders in
- * `lib/data.ts` for fetch calls without touching components.
+ * Shared UI types for catalog, navigation, and marketing components.
  */
 
 export type Certification = "U" | "UA" | "UA16+" | "A";

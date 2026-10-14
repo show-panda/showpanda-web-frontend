@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getAllMovies } from "@/lib/api/landing.api";
-import { GENRES, LANGUAGES } from "@/lib/constants";
 import type { Movie } from "@/lib/types/landing.type";
 import MoviesListCard from "@/components/landing/movies-list-card";
 
@@ -17,8 +16,8 @@ type Props = {
 
 export default async function MoviesPage({ searchParams }: Props) {
   const { genre, lang } = await searchParams;
-  const selectedGenre = GENRES.find((item) => item.id === genre);
-  const selectedLanguage = LANGUAGES.find((item) => item.id === lang);
+  const selectedGenre = genre?.trim().toLowerCase();
+  const selectedLanguage = lang?.trim().toLowerCase();
   let movies: Movie[] = [];
   let failed = false;
 
@@ -33,12 +32,19 @@ export default async function MoviesPage({ searchParams }: Props) {
     failed = true;
   }
 
+  const genreLabel = movies.flatMap((movie) => movie.genre).find(
+    (value) => value.toLowerCase() === selectedGenre,
+  );
+  const languageLabel = movies.map((movie) => movie.language).find(
+    (value) => value.toLowerCase() === selectedLanguage,
+  );
+
   const filtered = movies.filter((movie) => {
     const genreMatches = !selectedGenre || movie.genre.some(
-      (value) => value.toLowerCase() === selectedGenre.name.toLowerCase(),
+      (value) => value.toLowerCase() === selectedGenre,
     );
     const languageMatches = !selectedLanguage ||
-      movie.language.toLowerCase() === selectedLanguage.name.toLowerCase();
+      movie.language.toLowerCase() === selectedLanguage;
     return genreMatches && languageMatches;
   });
 
@@ -50,7 +56,7 @@ export default async function MoviesPage({ searchParams }: Props) {
           <h1 className="mt-2 text-3xl font-semibold">Movies</h1>
           {(selectedGenre || selectedLanguage) && (
             <p className="mt-2 text-sm text-muted-foreground">
-              {[selectedGenre?.name, selectedLanguage?.name].filter(Boolean).join(" · ")}
+              {[genreLabel ?? genre, languageLabel ?? lang].filter(Boolean).join(" · ")}
             </p>
           )}
         </div>
