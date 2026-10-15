@@ -12,10 +12,7 @@ export default function MoviesListCard({
   priority = false,
 }: MoviesListCardProps) {
   return (
-    <Link
-      href={`/movies/${movie.id}`}
-      className="group h-full w-full"
-    >
+    <Link href={"/movies/" + movie.id} className="group h-full w-full">
       <PosterImage
         src={movie.posterUrl}
         alt={`${movie.title} poster`}
