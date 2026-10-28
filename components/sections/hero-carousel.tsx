@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Clock, Ticket } from "lucide-react";
-import { getCarouselMovies } from "@/lib/api/landing.api";
 import type { Movie } from "@/lib/types/landing.type";
 import { formatRuntime } from "@/lib/format";
 import { Button } from "@/components/ui/button";
@@ -49,30 +48,10 @@ function MovieArtwork({
   );
 }
 
-export function HeroCarousel() {
-  const [movies, setMovies] = useState<Movie[] | null>(null);
-  const [failed, setFailed] = useState(false);
+export function HeroCarousel({ movies }: { movies: Movie[] | null }) {
   const [api, setApi] = useState<CarouselApi>();
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    let ignore = false;
-    getCarouselMovies()
-      .then((res) => {
-        console.log("🚀 ~ HeroCarousel ~ res:", res);
-        if (!ignore) {
-          if (res.code === 200 && Array.isArray(res.data)) setMovies(res.data);
-          else setFailed(true);
-        }
-      })
-      .catch(() => {
-        if (!ignore) setFailed(true);
-      });
-    return () => {
-      ignore = true;
-    };
-  }, []);
 
   useEffect(() => {
     if (!api) return;
@@ -98,17 +77,11 @@ export function HeroCarousel() {
     return () => window.clearInterval(id);
   }, [api, paused]);
 
-  if (failed) {
+  if (movies === null) {
     return (
       <div className="flex min-h-64 items-center justify-center bg-muted px-6 text-center text-muted-foreground">
         Featured movies are unavailable right now. Please try again later.
       </div>
-    );
-  }
-
-  if (movies === null) {
-    return (
-      <div className="h-[650px] w-full animate-pulse bg-muted sm:h-[600px] lg:h-[560px]" />
     );
   }
 

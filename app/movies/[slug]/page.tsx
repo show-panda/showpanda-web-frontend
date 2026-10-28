@@ -11,7 +11,22 @@ export default async function MovieShowtimesPage({
   params,
 }: MovieShowtimesPageProps) {
   const { slug } = await params;
-  const res = await getMovieShowtimes(slug);
+  let res: Awaited<ReturnType<typeof getMovieShowtimes>>;
+
+  try {
+    res = await getMovieShowtimes(slug);
+  } catch (error) {
+    console.error("Error fetching movie showtimes:", error);
+    return (
+      <main
+        id="main"
+        className="mx-auto w-full max-w-3xl px-4 py-16"
+        role="alert"
+      >
+        Showtimes are unavailable right now. Please try again later.
+      </main>
+    );
+  }
 
   if (res.code !== 200 || !res.data) notFound();
 

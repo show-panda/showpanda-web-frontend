@@ -46,18 +46,27 @@ export function AuthCallbackHandler() {
 
     saveTokens(accessToken, refreshToken);
 
-    getMe().then((result) => {
-      if (result.ok) {
-        setUser(result.user);
-        router.replace(nextPath);
-        return;
-      }
+    async function finishSignIn() {
+      try {
+        const res = await getMe();
+        if (res.ok) {
+          setUser(res.user);
+          router.replace(nextPath);
+          return;
+        }
 
-      clearTokens();
-      router.replace(
-        `/sign-in?error=${result.status === 401 ? "session" : "unavailable"}`,
-      );
-    });
+        clearTokens();
+        router.replace(
+          `/sign-in?error=${res.status === 401 ? "session" : "unavailable"}`,
+        );
+      } catch (error) {
+        console.error("Error completing sign-in:", error);
+        clearTokens();
+        router.replace("/sign-in?error=unavailable");
+      }
+    }
+
+    void finishSignIn();
   }, [router, setUser]);
 
   return (

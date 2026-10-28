@@ -30,16 +30,27 @@ export function SearchBar({ className }: { className?: string }) {
   const [movies, setMovies] = useState<Movie[] | null>(null);
 
   useEffect(() => {
+    if (!open || movies !== null) return;
     let active = true;
-    getAllMovies()
-      .then((response) => {
-        if (active) setMovies(response.code === 200 && Array.isArray(response.data) ? response.data : []);
-      })
-      .catch(() => {
+
+    async function loadMovies() {
+      try {
+        const res = await getAllMovies();
+        if (active)
+          setMovies(
+            res.code === 200 && Array.isArray(res.data) ? res.data : [],
+          );
+      } catch (error) {
+        console.error("Error fetching search movies:", error);
         if (active) setMovies([]);
-      });
-    return () => { active = false; };
-  }, []);
+      }
+    }
+
+    void loadMovies();
+    return () => {
+      active = false;
+    };
+  }, [open, movies]);
 
   // ⌘K / Ctrl-K to open from anywhere.
   useEffect(() => {
@@ -53,7 +64,10 @@ export function SearchBar({ className }: { className?: string }) {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  const results = useMemo(() => searchCatalog(movies ?? [], query), [movies, query]);
+  const results = useMemo(
+    () => searchCatalog(movies ?? [], query),
+    [movies, query],
+  );
 
   function go(href: string) {
     setOpen(false);
@@ -71,9 +85,7 @@ export function SearchBar({ className }: { className?: string }) {
         )}
       >
         <Search className="size-4 shrink-0 transition-colors group-hover:text-foreground" />
-        <span className="flex-1 truncate text-left">
-          Search for movies
-        </span>
+        <span className="flex-1 truncate text-left">Search for movies</span>
         <kbd className="hidden shrink-0 items-center gap-0.5 rounded border border-border bg-background px-1.5 font-mono text-[0.7rem] sm:inline-flex">
           ⌘K
         </kbd>
@@ -97,27 +109,27 @@ export function SearchBar({ className }: { className?: string }) {
               {movies === null
                 ? "Loading movies..."
                 : query
-                ? `No matches for “${query}”.`
-                : "Start typing to search the catalog."}
+                  ? `No matches for “${query}”.`
+                  : "Start typing to search the catalog."}
             </CommandEmpty>
             {results.length > 0 && (
-                <CommandGroup heading="Movies">
-                  {results.map((r) => (
-                    <CommandItem
-                      key={r.id}
-                      value={r.id}
-                      onSelect={() => go(r.href)}
-                    >
-                      <Film className="text-muted-foreground" aria-hidden />
-                      <span className="flex min-w-0 flex-col">
-                        <span className="truncate">{r.label}</span>
-                        <span className="truncate text-xs text-muted-foreground">
-                          {r.sublabel}
-                        </span>
+              <CommandGroup heading="Movies">
+                {results.map((r) => (
+                  <CommandItem
+                    key={r.id}
+                    value={r.id}
+                    onSelect={() => go(r.href)}
+                  >
+                    <Film className="text-muted-foreground" aria-hidden />
+                    <span className="flex min-w-0 flex-col">
+                      <span className="truncate">{r.label}</span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {r.sublabel}
                       </span>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
             )}
           </CommandList>
         </Command>

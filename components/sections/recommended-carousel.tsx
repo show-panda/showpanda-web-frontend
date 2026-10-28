@@ -2,35 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getRecommendedMovies } from "@/lib/api/landing.api";
 import type { Movie } from "@/lib/types/landing.type";
 import { cn } from "@/lib/utils";
 import { SectionHeading } from "@/components/shared/section-heading";
 import MoviesListCard from "../landing/movies-list-card";
 
-export function RecommendedCarousel() {
-  const [movies, setMovies] = useState<Movie[] | null>(null);
-  const [failed, setFailed] = useState(false);
+export function RecommendedCarousel({ movies }: { movies: Movie[] | null }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
-
-  useEffect(() => {
-    let ignore = false;
-    getRecommendedMovies()
-      .then((res) => {
-        if (!ignore) {
-          if (res.code === 200 && Array.isArray(res.data)) setMovies(res.data);
-          else setFailed(true);
-        }
-      })
-      .catch(() => {
-        if (!ignore) setFailed(true);
-      });
-    return () => {
-      ignore = true;
-    };
-  }, []);
 
   const updateEdges = useCallback(() => {
     const el = trackRef.current;
@@ -88,10 +68,8 @@ export function RecommendedCarousel() {
         </button>
       </div>
 
-      {failed ? (
+      {movies === null ? (
         <EmptyState message="Recommendations are unavailable right now. Please try again later." />
-      ) : movies === null ? (
-        <RecommendedSkeleton />
       ) : movies.length ? (
         <ul
           ref={trackRef}
@@ -99,12 +77,12 @@ export function RecommendedCarousel() {
             "scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 sm:mx-0 sm:px-0",
           )}
         >
-          {movies.map((movie, i) => (
+          {movies.map((movie) => (
             <li
               key={movie.id}
               className="w-[60vw] shrink-0 snap-start rounded-2xl border border-primary/20 sm:w-56 lg:w-60"
             >
-              <MoviesListCard movie={movie} priority={i < 5} />
+              <MoviesListCard movie={movie} />
             </li>
           ))}
         </ul>
@@ -120,22 +98,5 @@ function EmptyState({ message }: { message: string }) {
     <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
       {message}
     </div>
-  );
-}
-
-function RecommendedSkeleton() {
-  return (
-    <ul className="scrollbar-hide -mx-4 flex gap-4 overflow-hidden px-4 pb-2 sm:mx-0 sm:px-0">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <li
-          key={i}
-          className="flex w-[60vw] shrink-0 flex-col gap-3 sm:w-56 lg:w-60"
-        >
-          <div className="aspect-2/3 animate-pulse rounded-xl bg-muted" />
-          <div className="h-3.5 w-3/4 animate-pulse rounded bg-muted" />
-          <div className="h-3 w-1/2 animate-pulse rounded bg-muted" />
-        </li>
-      ))}
-    </ul>
   );
 }

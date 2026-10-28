@@ -26,6 +26,7 @@ function getShowsForDate(shows: MovieShowType[], date: string) {
 }
 
 export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
+  console.log("🚀 ~ ShowtimesView ~ venues:", venues);
   const dates = getShowDates(venues);
   const [activeDate, setActiveDate] = useState(dates[0] ?? "");
 
@@ -71,15 +72,19 @@ export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
               </div>
 
               <div className="flex flex-wrap gap-2.5">
-                {showsToday.map((show) => (
+                {showsToday.map((show) =>
                   show.availableSeats <= 0 ? (
                     <span
                       key={show.showId}
                       title="Sold out"
                       className="min-w-24 rounded-lg border border-primary/20 px-3 py-2 text-center text-muted-foreground opacity-60"
                     >
-                      <span className="block text-sm font-semibold">{formatShowTime(show.startTime)}</span>
-                      <span className="mt-0.5 block text-[10px] uppercase tracking-wide">Sold out</span>
+                      <span className="block text-sm font-semibold">
+                        {formatShowTime(show.startTime)}
+                      </span>
+                      <span className="mt-0.5 block text-[10px] uppercase tracking-wide">
+                        Sold out
+                      </span>
                     </span>
                   ) : (
                     <Link
@@ -88,11 +93,15 @@ export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
                       title={`${show.availableSeats} seats available`}
                       className="min-w-24 rounded-lg border border-emerald-500/50 px-3 py-2 text-center text-emerald-700 transition-colors hover:bg-emerald-500/10 dark:text-emerald-400"
                     >
-                      <span className="block text-sm font-semibold">{formatShowTime(show.startTime)}</span>
-                      <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">{show.screenName}</span>
+                      <span className="block text-sm font-semibold">
+                        {formatShowTime(show.startTime)}
+                      </span>
+                      <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">
+                        {show.screenName}
+                      </span>
                     </Link>
-                  )
-                ))}
+                  ),
+                )}
               </div>
             </li>
           );

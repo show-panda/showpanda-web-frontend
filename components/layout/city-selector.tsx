@@ -32,14 +32,20 @@ export function CitySelector({ className }: { className?: string }) {
     async function fetchCities() {
       try {
         const res = await getCitiesOptions();
-        if (!ignore && Array.isArray(res.data)) {
+        if (ignore) return;
+        if (res.code === 200 && Array.isArray(res.data)) {
           const options = res.data;
           let savedId: string | undefined;
           try {
             const saved = window.localStorage.getItem(STORAGE_KEY);
             if (saved) {
               const parsed: unknown = JSON.parse(saved);
-              if (parsed && typeof parsed === "object" && "id" in parsed && typeof parsed.id === "string") {
+              if (
+                parsed &&
+                typeof parsed === "object" &&
+                "id" in parsed &&
+                typeof parsed.id === "string"
+              ) {
                 savedId = parsed.id;
               }
             }
@@ -47,10 +53,17 @@ export function CitySelector({ className }: { className?: string }) {
             // Bad or unavailable storage should not prevent city selection.
           }
           setCities(options);
-          setCity(options.find((candidate) => candidate.id === savedId) ?? options[0] ?? null);
+          setCity(
+            options.find((candidate) => candidate.id === savedId) ??
+              options[0] ??
+              null,
+          );
+        } else {
+          setCities([]);
         }
       } catch (error) {
-        console.log("Error in getting cities data: ", error);
+        console.error("Error fetching cities:", error);
+        if (!ignore) setCities([]);
       }
     }
 
