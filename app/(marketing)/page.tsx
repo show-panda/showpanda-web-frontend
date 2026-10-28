@@ -3,7 +3,6 @@ import { JsonLd } from "@/components/shared/json-ld";
 import { HeroCarousel } from "@/components/sections/hero-carousel";
 import { MoviesSection } from "@/components/sections/movies-section";
 import { RecommendedCarousel } from "@/components/sections/recommended-carousel";
-import { DownloadApp } from "@/components/sections/download-app";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -29,8 +28,6 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-7xl overflow-hidden sm:px-6 px-4 sm:py-14 space-y-20">
         <MoviesSection />
         <RecommendedCarousel />
-        {/* Browse, theatre, and offer sections can return when backed by API data. */}
-        <DownloadApp />
       </div>
     </main>
   );

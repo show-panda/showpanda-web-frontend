@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   ArrowLeft,
   Armchair,
-  Popcorn,
+  Clapperboard,
   ShieldCheck,
   Ticket,
   TriangleAlert,
@@ -16,16 +16,16 @@ import { GoogleSignInButton } from "@/components/layout/authentication/google-si
 
 export const metadata: Metadata = {
   title: "Sign in",
-  description: `Sign in to ${SITE.name} with Google to book tickets, manage your bookings, and pick up where you left off.`,
+  description: `Sign in to ${SITE.name} with Google and return to the movie you were viewing.`,
   alternates: { canonical: "/sign-in" },
   // Auth screens carry no public content and shouldn't surface in search.
   robots: { index: false, follow: true },
 };
 
 const PERKS = [
-  { icon: Armchair, text: "Pick your exact seats before you pay" },
-  { icon: Ticket, text: "Every booking and m-ticket in one place" },
-  { icon: Popcorn, text: "Member-only offers on snacks and combos" },
+  { icon: Clapperboard, text: "Browse movies showing in cinemas" },
+  { icon: Ticket, text: "Find dates, cinemas, and showtimes" },
+  { icon: Armchair, text: "Explore available seats and prices" },
 ];
 
 //  Only allow same-origin, path-relative returns. Anything else (absolute URLs, protocol-relative `//evil.com`)
@@ -78,7 +78,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             </h1>
 
             <p className="mt-3 text-muted-foreground">
-              Sign in to continue booking your movie experience.
+              Sign in to explore your movie experience.
             </p>
 
             {errorMessage && (
@@ -123,23 +123,6 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
               </p>
             </div>
 
-            <p className="mt-6 text-xs leading-6 text-muted-foreground">
-              By continuing you agree to our{" "}
-              <Link
-                href="/legal/terms"
-                className="font-medium text-foreground underline underline-offset-4 hover:text-brand"
-              >
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/legal/privacy"
-                className="font-medium text-foreground underline underline-offset-4 hover:text-brand"
-              >
-                Privacy Policy
-              </Link>
-              .
-            </p>
           </div>
 
           <footer className="text-xs text-muted-foreground">
@@ -186,8 +169,8 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           </h2>
 
           <p className="mt-5 max-w-md leading-7 text-white/80">
-            {SITE.tagline} Discover what&apos;s showing near you, choose your
-            favourite seats, and book in seconds.
+            {SITE.tagline} Discover what&apos;s showing near you and choose your
+            favourite seats.
           </p>
 
           <ul className="mt-10 space-y-4">
