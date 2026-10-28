@@ -15,8 +15,8 @@ import { BrandLogo } from "@/components/layout/brand-logo";
 import { GoogleSignInButton } from "@/components/layout/authentication/google-sign-in-btn";
 
 export const metadata: Metadata = {
-  title: "Sign in",
-  description: `Sign in to ${SITE.name} with Google and return to the movie you were viewing.`,
+  title: "Sign in or sign up",
+  description: `Continue with Google to access or create your ${SITE.name} account.`,
   alternates: { canonical: "/sign-in" },
   // Auth screens carry no public content and shouldn't surface in search.
   robots: { index: false, follow: true },
@@ -28,13 +28,6 @@ const PERKS = [
   { icon: Armchair, text: "Explore available seats and prices" },
 ];
 
-//  Only allow same-origin, path-relative returns. Anything else (absolute URLs, protocol-relative `//evil.com`)
-function safeRedirect(value: string | string[] | undefined) {
-  if (typeof value !== "string") return undefined;
-  const safe = safeAuthReturnPath(value);
-  return safe === "/" && value !== "/" ? undefined : safe;
-}
-
 // Every failure the sign-in flow can redirect back with. The wording stays
 // generic on purpose — nothing about tokens or the API's internals.
 const ERRORS: Record<string, string> = {
@@ -42,7 +35,8 @@ const ERRORS: Record<string, string> = {
     "We couldn't complete that sign-in. Please try again from this page.",
   session:
     "We couldn't verify your Google account. Please try signing in again.",
-  unavailable: "Sign-in is unavailable right now. Please try again in a moment.",
+  unavailable:
+    "Sign-in is unavailable right now. Please try again in a moment.",
 };
 
 type SignInPageProps = {
@@ -52,7 +46,9 @@ type SignInPageProps = {
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const { next, error } = await searchParams;
 
-  const redirectTo = safeRedirect(next);
+  const redirectTo = safeAuthReturnPath(
+    typeof next === "string" ? next : undefined,
+  );
   const errorMessage = typeof error === "string" ? ERRORS[error] : undefined;
 
   return (
@@ -74,11 +70,11 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
 
           <div className="my-auto py-16">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Welcome back
+              Sign in or sign up
             </h1>
 
             <p className="mt-3 text-muted-foreground">
-              Sign in to explore your movie experience.
+              Continue with Google to access your account or create one.
             </p>
 
             {errorMessage && (
@@ -122,7 +118,6 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
                 remember, and we never post on your behalf.
               </p>
             </div>
-
           </div>
 
           <footer className="text-xs text-muted-foreground">

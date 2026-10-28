@@ -20,10 +20,19 @@ import {
 
 const ROTATE_MS = 6500;
 
-function MovieArtwork({ movie, priority }: { movie: Movie; priority: boolean }) {
+function MovieArtwork({
+  movie,
+  priority,
+}: {
+  movie: Movie;
+  priority: boolean;
+}) {
   return (
-    <div className="relative order-1 h-72 overflow-hidden sm:h-80 lg:order-2 lg:h-full lg:min-h-[560px]">
-      <div className="absolute top-1/2 right-[12%] size-64 -translate-y-1/2 rounded-full bg-red-600/25 blur-[100px] sm:size-96" aria-hidden />
+    <div className="relative order-1 h-72 overflow-hidden sm:h-80 lg:order-2 lg:h-full lg:min-h-140">
+      <div
+        className="absolute top-1/2 right-[12%] size-64 -translate-y-1/2 rounded-full bg-red-600/25 blur-[100px] sm:size-96"
+        aria-hidden
+      />
       <PosterImage
         src={movie.posterUrl}
         alt={`${movie.title} poster`}
@@ -51,7 +60,7 @@ export function HeroCarousel() {
     let ignore = false;
     getCarouselMovies()
       .then((res) => {
-        console.log("🚀 ~ HeroCarousel ~ res:", res)
+        console.log("🚀 ~ HeroCarousel ~ res:", res);
         if (!ignore) {
           if (res.code === 200 && Array.isArray(res.data)) setMovies(res.data);
           else setFailed(true);
@@ -79,7 +88,12 @@ export function HeroCarousel() {
 
   // Pause rotation while a visitor is reading or using the controls.
   useEffect(() => {
-    if (!api || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (
+      !api ||
+      paused ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
     const id = window.setInterval(() => api.scrollNext(), ROTATE_MS);
     return () => window.clearInterval(id);
   }, [api, paused]);
@@ -93,7 +107,9 @@ export function HeroCarousel() {
   }
 
   if (movies === null) {
-    return <div className="h-[650px] w-full animate-pulse bg-muted sm:h-[600px] lg:h-[560px]" />;
+    return (
+      <div className="h-[650px] w-full animate-pulse bg-muted sm:h-[600px] lg:h-[560px]" />
+    );
   }
 
   if (movies.length === 0) return null;
@@ -109,16 +125,20 @@ export function HeroCarousel() {
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
+          if (!event.currentTarget.contains(event.relatedTarget))
+            setPaused(false);
         }}
       >
         <CarouselContent className="ml-0">
           {movies.map((movie, index) => (
             <CarouselItem key={movie.id} className="pl-0">
-              <div className="relative mx-auto grid min-h-[650px] max-w-7xl grid-cols-1 lg:min-h-[560px] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+              <div className="relative mx-auto grid min-h-162.5 max-w-7xl grid-cols-1 lg:min-h-140 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
                 <div className="relative z-10 order-2 flex flex-col justify-center px-6 pt-7 pb-24 sm:px-10 sm:pt-10 lg:order-1 lg:py-20 lg:pl-20 lg:pr-4">
                   <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-red-400 uppercase">
-                    <span className="size-1.5 rounded-full bg-red-400" aria-hidden />
+                    <span
+                      className="size-1.5 rounded-full bg-red-400"
+                      aria-hidden
+                    />
                     Now showing
                   </div>
 
@@ -128,7 +148,9 @@ export function HeroCarousel() {
 
                   <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-white/65">
                     {movie.language && <span>{movie.language}</span>}
-                    {movie.language && movie.durationMin > 0 && <span aria-hidden>·</span>}
+                    {movie.language && movie.durationMin > 0 && (
+                      <span aria-hidden>·</span>
+                    )}
                     {movie.durationMin > 0 && (
                       <span className="inline-flex items-center gap-1.5">
                         <Clock className="size-4" aria-hidden />
@@ -136,7 +158,9 @@ export function HeroCarousel() {
                       </span>
                     )}
                     {movie.genre.length > 0 && <span aria-hidden>·</span>}
-                    {movie.genre.length > 0 && <span>{movie.genre.slice(0, 2).join(" / ")}</span>}
+                    {movie.genre.length > 0 && (
+                      <span>{movie.genre.slice(0, 2).join(" / ")}</span>
+                    )}
                   </div>
 
                   {movie.description && (
@@ -189,10 +213,14 @@ export function HeroCarousel() {
                   onClick={() => api?.scrollTo(index)}
                   className="group grid size-9 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  <span className={cn(
-                    "h-2 rounded-full transition-all",
-                    activeIndex === index ? "w-7 bg-white" : "w-2 bg-white/40 group-hover:bg-white/75",
-                  )} />
+                  <span
+                    className={cn(
+                      "h-2 rounded-full transition-all",
+                      activeIndex === index
+                        ? "w-7 bg-white"
+                        : "w-2 bg-white/40 group-hover:bg-white/75",
+                    )}
+                  />
                 </button>
               ))}
             </div>

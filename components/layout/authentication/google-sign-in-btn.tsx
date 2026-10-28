@@ -37,10 +37,6 @@ export function GoogleSignInButton({
     // double-submitted while the redirect is in flight.
     setPending(true);
 
-    // The API's callback carries only the tokens, so the page to return to
-    // waits in this tab until `/auth/callback` picks it up.
-    rememberNextPath(redirectTo);
-
     window.location.href = new URL("/auth/google", config.apiURL).toString();
   };
 

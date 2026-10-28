@@ -5,14 +5,12 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { getMe, logout } from "@/lib/api/auth.api";
-import { rememberVisitedPath } from "@/lib/auth-return-path";
 import { clearTokens } from "@/lib/auth-storage";
 import type { AuthUser } from "@/lib/types/auth.type";
 
@@ -35,7 +33,6 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const pathname = usePathname();
 
   const [user, setUser] = useState<AuthUser | null>(null);
   const [status, setStatus] = useState<AuthStatus>("loading");
@@ -47,11 +44,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(next);
     setStatus(next ? "authenticated" : "unauthenticated");
   }, []);
-
-  // Tracks where the user has been, so sign-in can send them back there.
-  useEffect(() => {
-    rememberVisitedPath(pathname);
-  }, [pathname]);
 
   // Load the session once per page load. With no stored token this answers
   // 401 without making a request.
@@ -84,12 +76,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.replace("/sign-in");
   }, [applyUser, router]);
 
-  const value = useMemo(
-    () => ({ user, status, setUser: applyUser, signOut, signingOut }),
-    [user, status, applyUser, signOut, signingOut],
+  return (
+    <AuthContext.Provider
+      value={{ user, status, setUser: applyUser, signOut, signingOut }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

@@ -21,9 +21,13 @@ type Result = {
 
 const FAILED: Result = { ok: false, status: 401, data: null };
 
-async function call(action: string, init: RequestInit = {}): Promise<Result> {
+async function call(
+  action: string,
+  init: RequestInit = {},
+  base = "/api/auth",
+): Promise<Result> {
   try {
-    const response = await fetch(`/api/auth/${action}`, {
+    const response = await fetch(`${base}${action ? `/${action}` : ""}`, {
       ...init,
       headers: { "Content-Type": "application/json", ...init.headers },
     });
@@ -55,7 +59,10 @@ function isRejected(status: number) {
 }
 
 /** Swaps the refresh token for a new access token. Returns it, or null. */
-async function requestRefresh(): Promise<{ token: string | null; status: number }> {
+async function requestRefresh(): Promise<{
+  token: string | null;
+  status: number;
+}> {
   const refreshToken = readRefreshToken();
 
   if (!refreshToken) return { token: null, status: 401 };
@@ -70,7 +77,8 @@ async function requestRefresh(): Promise<{ token: string | null; status: number 
   if (!ok || !accessToken) {
     // A refresh token the API rejects is unusable — end the session instead of
     // retrying it forever. A network blip leaves it alone.
-    if (isRejected(status) && readRefreshToken() === refreshToken) clearTokens();
+    if (isRejected(status) && readRefreshToken() === refreshToken)
+      clearTokens();
 
     return { token: null, status };
   }
@@ -99,7 +107,11 @@ function refreshAccessToken() {
  * Calls a protected endpoint with the stored access token, refreshing it once
  * if the API says it has expired. Only once, so there is no refresh loop.
  */
-async function authorizedFetch(action: string, init: RequestInit = {}) {
+export async function authorizedFetch(
+  action: string,
+  init: RequestInit = {},
+  base = "/api/auth",
+) {
   const storedToken = readAccessToken();
   const initial = storedToken
     ? { token: storedToken, status: 200 }
@@ -108,10 +120,14 @@ async function authorizedFetch(action: string, init: RequestInit = {}) {
   if (!initial.token) return { ...FAILED, status: initial.status };
 
   const send = (accessToken: string) =>
-    call(action, {
-      ...init,
-      headers: { ...init.headers, Authorization: `Bearer ${accessToken}` },
-    });
+    call(
+      action,
+      {
+        ...init,
+        headers: { ...init.headers, Authorization: `Bearer ${accessToken}` },
+      },
+      base,
+    );
 
   const result = await send(initial.token);
 

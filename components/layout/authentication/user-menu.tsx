@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { LoaderCircle, LogOut } from "lucide-react";
+import Link from "next/link";
+import { LoaderCircle, LogOut, Ticket } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { AuthUser } from "@/lib/types/auth.type";
@@ -87,6 +88,9 @@ export function UserMenu({ user }: { user: AuthUser }) {
         </div>
 
         <div className="p-1.5">
+          <Button asChild variant="ghost" size="lg" className="w-full justify-start gap-2">
+            <Link href="/bookings" onClick={() => setOpen(false)}><Ticket className="size-4" />My bookings</Link>
+          </Button>
           <Button
             variant="ghost"
             size="lg"
