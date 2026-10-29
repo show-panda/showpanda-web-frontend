@@ -7,5 +7,5 @@ import api from "./api";
 export const getShowSeats = async (
   showId: string,
 ): Promise<getShowSeatsApiResT> => {
-  return await api.get(`/shows/${encodeURIComponent(showId)}/seats`);
+  return await api.get(`/shows/${encodeURIComponent(showId)}/seats`, 0);
 };

@@ -5,12 +5,16 @@ import { SeatButton } from "./seat-button";
 type SeatCategoryProps = {
   section: SeatSection;
   selectedIds: Set<string>;
+  pendingIds: Set<string>;
+  releasedIds: Set<string>;
   onToggle: (seat: Seat) => void;
 };
 
 export function SeatCategory({
   section,
   selectedIds,
+  pendingIds,
+  releasedIds,
   onToggle,
 }: SeatCategoryProps) {
   return (
@@ -34,6 +38,8 @@ export function SeatCategory({
                     key={seat.showSeatId}
                     seat={seat}
                     selected={selectedIds.has(seat.showSeatId)}
+                    pending={pendingIds.has(seat.showSeatId)}
+                    availableOverride={releasedIds.has(seat.showSeatId)}
                     onToggle={onToggle}
                   />
                 ) : (

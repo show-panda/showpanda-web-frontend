@@ -37,6 +37,7 @@ export function GoogleSignInButton({
     // double-submitted while the redirect is in flight.
     setPending(true);
 
+    rememberNextPath(redirectTo ?? "/");
     window.location.href = new URL("/auth/google", config.apiURL).toString();
   };
 

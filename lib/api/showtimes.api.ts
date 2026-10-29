@@ -10,10 +10,10 @@ import api from "./api";
 export const getMovieShowtimes = async (
   movieId: string,
 ): Promise<getMovieShowtimesApiResT> => {
-  return await api.get(`/movies/${encodeURIComponent(movieId)}/showtimes`);
+  return await api.get(`/movies/${encodeURIComponent(movieId)}/showtimes`, 15);
 };
 
 /** A single show with its movie, screen and venue. */
 export const getShow = async (showId: string): Promise<getShowApiResT> => {
-  return await api.get(`/shows/${encodeURIComponent(showId)}`);
+  return await api.get(`/shows/${encodeURIComponent(showId)}`, 60);
 };

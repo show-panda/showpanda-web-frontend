@@ -4,19 +4,9 @@ import { useState } from "react";
 import { MapPin } from "lucide-react";
 import type { MovieShowType, ShowtimeVenue } from "@/lib/types/showtimes.type";
 import { formatShowTime, toDateKey } from "@/lib/utils";
+import { getShowDates } from "@/lib/showtimes";
 import DateSelectorButton from "./date-selector-btn";
 import Link from "next/link";
-
-/** Unique days (IST) that have shows, earliest first. */
-function getShowDates(venues: ShowtimeVenue[]) {
-  const dates = new Set<string>();
-  for (const { shows } of venues) {
-    for (const show of shows) {
-      dates.add(toDateKey(show.startTime));
-    }
-  }
-  return [...dates].sort();
-}
 
 /** A venue's shows on the given day, earliest first. */
 function getShowsForDate(shows: MovieShowType[], date: string) {
@@ -26,7 +16,6 @@ function getShowsForDate(shows: MovieShowType[], date: string) {
 }
 
 export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
-  console.log("🚀 ~ ShowtimesView ~ venues:", venues);
   const dates = getShowDates(venues);
   const [activeDate, setActiveDate] = useState(dates[0] ?? "");
 
@@ -96,6 +85,7 @@ export function ShowtimesView({ venues }: { venues: ShowtimeVenue[] }) {
                       <span className="block text-sm font-semibold">
                         {formatShowTime(show.startTime)}
                       </span>
+
                       <span className="mt-0.5 block text-[10px] uppercase tracking-wide opacity-80">
                         {show.screenName}
                       </span>

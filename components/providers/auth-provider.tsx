@@ -51,13 +51,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let active = true;
     const startedAt = revision.current;
 
-    getMe().then((result) => {
-      if (!active || revision.current !== startedAt) return;
+    async function loadSession() {
+      try {
+        const res = await getMe();
+        if (!active || revision.current !== startedAt) return;
 
-      if (!result.ok && result.status === 401) clearTokens();
+        if (!res.ok && res.status === 401) clearTokens();
+        applyUser(res.user);
+      } catch (error) {
+        console.error("Error loading session:", error);
+        if (active && revision.current === startedAt) applyUser(null);
+      }
+    }
 
-      applyUser(result.user);
-    });
+    void loadSession();
 
     return () => {
       active = false;
@@ -67,13 +74,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = useCallback(async () => {
     setSigningOut(true);
 
-    await logout();
-
-    clearTokens();
-    applyUser(null);
-    setSigningOut(false);
-
-    router.replace("/sign-in");
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    } finally {
+      clearTokens();
+      applyUser(null);
+      setSigningOut(false);
+      router.replace("/sign-in");
+    }
   }, [applyUser, router]);
 
   return (

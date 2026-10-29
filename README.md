@@ -46,11 +46,14 @@ Create `.env.local` and set the following values:
 | `/movies` | `app/(marketing)/movies/page.tsx` | Full movie listing; optional `genre` and `lang` query parameters filter the results. |
 | `/movies/[slug]` | `app/movies/[slug]/page.tsx` | Cinemas and showtimes for a movie. The URL segment is the movie ID. |
 | `/seat-layout/[slug]` | `app/seat-layout/[slug]/page.tsx` | Seat availability and selection for a show. The URL segment is the show ID. |
-| `/sign-in` | `app/sign-in/page.tsx` | Google sign-in entry and error messages; `next` can specify the return page. |
+| `/review-order/[showId]` | `app/review-order/[showId]/page.tsx` | Review held seats, movie details, and ticket prices before payment. |
+| `/bookings` | `app/(marketing)/bookings/page.tsx` | Signed-in user's booking history. |
+| `/bookings/[id]` | `app/(marketing)/bookings/[id]/page.tsx` | Booking details and cancellation. |
+| `/sign-in` | `app/sign-in/page.tsx` | One Google flow for sign-in and sign-up; `next` can specify the return page. |
 | `/auth/callback` | `app/auth/callback/page.tsx` | Completes Google sign-in after the API redirects back. |
 | `/api/auth/[action]` | `app/api/auth/[action]/route.ts` | Same-origin proxy for `me`, `refresh`, and `logout` auth requests. |
 
-The `(marketing)` folder groups pages under the shared header and footer; it does not appear in URLs. The root layout supplies the theme, authentication state, and notifications. The seat layout currently stops at seat selection; there is no checkout page in this repo.
+The `(marketing)` folder groups pages under the shared header and footer; it does not appear in URLs. The root layout supplies the theme, authentication state, and notifications. See [Booking flow](docs/BOOKING_FLOW.md) for the seat hold, review, API, and pending payment integration details.
 
 ## Project layout
 
